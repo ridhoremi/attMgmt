@@ -1,7 +1,3 @@
-<?php
-
-use Faker\Provider\Base;
-?>
 <!doctype html>
 <html lang="en">
 
@@ -65,9 +61,12 @@ use Faker\Provider\Base;
         function tampil_form() {
             $('#modal-form').modal('show');
             $('#modal-title').text('Tambah Data');
+            $('.form-control').removeClass('is-invalid');
+            $('.help-block').text('');
         }
 
         function simpan() {
+
             $.ajax({
                 url: '<?= Base_url('/simpankaryawan'); ?>',
                 type: 'POST',
@@ -79,9 +78,13 @@ use Faker\Provider\Base;
                     if (data.status) {
                         $('#form')[0].reset();
                         $('#modal-form').modal('hide');
-                        $('#tabel1').DataTable().ajax.reload(); // biar langsung refresh tabel
+                        $('#tabel1').DataTable().ajax.reload();
                     } else {
-                        alert('Gagal simpan');
+                        for (var i = 0; i < data.inputerror.length; i++) {
+                            $('[name="' + data.inputerror[i] + '"]').addClass('is-invalid');
+                            $('[name="' + data.inputerror[i] + '"]').next('.help-block').text(data.error_string[i]);
+                        }
+
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

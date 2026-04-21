@@ -6,11 +6,10 @@
             <table id="tabel1" class="table table-striped">
                 <thead>
                     <tr>
-
                         <th scope="col">No</th>
                         <th scope="col">Nama</th>
                         <th scope="col">Alamat</th>
-
+                        <th scope="col">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,19 +37,22 @@
                     <div class="form-group row">
                         <label for="id" class="col-sm-2 col-form-label">ID </label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="id" name="id">
+                            <input type="number" class="form-control" id="id" name="id">
+                            <span class="help-block text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="nama" class="col-sm-2 col-form-label">Nama </label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="nama" name="nama">
+                            <span class="help-block text-danger"></span>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="alamat" name="alamat">
+
                         </div>
                     </div>
 

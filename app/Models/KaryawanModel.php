@@ -43,21 +43,26 @@ class KaryawanModel extends Model
         return $result;
     }
 
-    public function rulesValidasi($method = null)
+    public function rulesValidasi($method = null, $id = null)
     {
-
+        // tentukan rule untuk id
+        if ($method == 'update') {
+            $idRule = "required|is_unique[karyawan.id,id,$id]";
+        } else {
+            $idRule = "required|is_unique[karyawan.id]";
+        }
         $rulesValidation = [
             'id' => [
-                'rules' => 'required|is_unique[id]',
+                'rules' => $idRule,
                 'errors' => [
-                    'required' => '{field}Harus di isi.',
+                    'required' => '{field} Harus di isi.',
                     'is_unique' => '{field} Sudah digunakan.'
                 ]
             ],
             'nama' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => '{field}Harus di isi.'
+                    'required' => '{field} Harus di isi.'
                 ]
             ],
 

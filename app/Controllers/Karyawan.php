@@ -3,8 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\KaryawanModel;
-use PhpParser\Node\Stmt\Echo_;
-use SebastianBergmann\Type\FalseType;
+
 
 class Karyawan extends BaseController
 {
@@ -56,10 +55,12 @@ class Karyawan extends BaseController
         $data = [];
         $no = $start + 1;
         foreach ($list as $temp) {
+            $aksi = '<a href="javascript:void(0)" class="btn btn-warning" onclick="#"> Edit </a>';
             $row = [];
             $row[] = $no;
             $row[] = $temp['nama'];
             $row[] = $temp['alamat'];
+            $row[] = $aksi;
             $data[] = $row;
             $no++;
         }
@@ -70,6 +71,9 @@ class Karyawan extends BaseController
 
     public function simpan()
     {
+
+        //validasi 
+        $this->_validate('insert');
 
         $data = [
             'id' => $this->request->getVar('id'),
@@ -91,31 +95,22 @@ class Karyawan extends BaseController
         ]);
     }
 
-    public function _validate($method)
+    private function _validate($method = null, $id = null)
     {
-        if (!$this->validate($this->model->rulesValidasi($method))) {
-            $validation = \config\Services::validation();
-            $data = [];
-            $data['error_string'] = [];
-            $data['inputerror'] = [];
-            $data['status'] = TRUE;
+        $rules = $this->model->rulesValidasi($method, $id);
 
-            if ($validation->hasError('id')) {
-                $data['inputerror'][] = 'id';
-                $data['error_string'][] = $validation->getError('id');
-                $data['status'] = FALSE;
-            }
+        if (!$this->validate($rules)) {
 
-            if ($validation->hasError('nama')) {
-                $data['inputerror'][] = 'nama';
-                $data['error_string'][] = $validation->getError('nama');
-                $data['status'] = FALSE;
-            }
+            $errors = $this->validator->getErrors();
 
-            if ($data['status'] === FALSE) {
-                echo json_encode($data);
-                exit();
-            }
+            $data = [
+                'status' => false,
+                'inputerror' => array_keys($errors),
+                'error_string' => array_values($errors)
+            ];
+
+            echo json_encode($data);
+            exit();
         }
     }
 }
