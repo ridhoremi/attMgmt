@@ -16,6 +16,7 @@ class Karyawan extends BaseController
     public function index(): string
     {
         $data = [
+            'title' => 'Data Karyawan',
             'content' => 'karyawan'
 
         ];
@@ -45,7 +46,7 @@ class Karyawan extends BaseController
 
         foreach ($list as $temp) {
             $aksi = '<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="editData(' . $temp['id'] . ')">Edit</a>
-                 <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="deleteData(' . $temp['id'] . ')">Delete</a>';
+                 <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="hapusData(' . $temp['id'] . ')">Delete</a>';
 
             $row = [];
             $row[] = $no;
@@ -136,6 +137,23 @@ class Karyawan extends BaseController
 
         $result = $this->model->update($id, $data);
 
+        if ($result === false) {
+            return $this->response->setJSON([
+                'status' => false,
+                'error'  => $this->model->errors(),
+                'db'     => $this->model->db->error()
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => true
+        ]);
+    }
+
+    public function hapus($id)
+    {
+
+        $result = $this->model->delete($id);
         if ($result === false) {
             return $this->response->setJSON([
                 'status' => false,

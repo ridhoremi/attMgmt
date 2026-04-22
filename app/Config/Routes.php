@@ -11,3 +11,4 @@ $routes->get('/listkaryawan', 'Karyawan::list');
 $routes->post('/simpankaryawan', 'Karyawan::simpan');
 $routes->get('/editkaryawan/(:num)', 'Karyawan::edit/$1');
 $routes->post('/updatekaryawan', 'Karyawan::update');
+$routes->delete('/hapuskaryawan/(:num)', 'Karyawan::hapus/$1');

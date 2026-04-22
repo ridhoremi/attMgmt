@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.7/css/dataTables.bootstrap4.css">
-    <title>Hello, world!</title>
+    <title><?= $title ?? 'Default Title'; ?></title>
 </head>
 
 <body>
@@ -41,7 +41,14 @@
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.bootstrap4.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
+        const BASE_URL = "<?= base_url(); ?>";
+    </script>
+    <script src="<?= base_url('js/karyawan.js'); ?>"></script>
+
+    <!-- <script>
         var table;
         var method;
 
@@ -130,7 +137,45 @@
                 }
             })
         }
-    </script>
+
+        function hapusData(id) {
+            Swal.fire({
+                title: 'Yakin?',
+                text: "Data akan dihapus!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/hapuskaryawan/' + id,
+                        type: 'DELETE',
+                        dataType: 'json',
+                        success: function(res) {
+                            if (res.status) {
+                                $('#tabel1').DataTable().ajax.reload();
+                                Swal.fire(
+                                    'Berhasil!',
+                                    'Data berhasil dihapus.',
+                                    'success'
+                                );
+
+                            } else {
+                                Swal.fire(
+                                    'Gagal!',
+                                    'Data gagal dihapus.',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script> -->
 
 </body>
 
