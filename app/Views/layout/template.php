@@ -42,6 +42,9 @@
     <script src="https://cdn.datatables.net/2.3.7/js/dataTables.bootstrap4.js"></script>
 
     <script>
+        var table;
+        var method;
+
         $(document).ready(function() {
             // new DataTable('#tabel1');
             $('#tabel1').DataTable({
@@ -54,21 +57,30 @@
                     "url": '<?= Base_url('/listkaryawan'); ?>',
                     "type": "GET"
                 }
-
             });
         });
 
         function tampil_form() {
+            method = 'insert';
             $('#modal-form').modal('show');
             $('#modal-title').text('Tambah Data');
+            $('#form')[0].reset();
+            $('#id').prop('readonly', false);
             $('.form-control').removeClass('is-invalid');
             $('.help-block').text('');
         }
 
         function simpan() {
 
+            let url;
+
+            if (method == 'insert') {
+                url = '<?= Base_url('/simpankaryawan'); ?>';
+            } else {
+                url = '<?= Base_url('/updatekaryawan'); ?>';
+            }
             $.ajax({
-                url: '<?= Base_url('/simpankaryawan'); ?>',
+                url: url,
                 type: 'POST',
                 data: new FormData($('#form')[0]),
                 dataType: 'JSON',
@@ -84,14 +96,39 @@
                             $('[name="' + data.inputerror[i] + '"]').addClass('is-invalid');
                             $('[name="' + data.inputerror[i] + '"]').next('.help-block').text(data.error_string[i]);
                         }
-
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR.responseText); // penting buat debug
+                    console.log(jqXHR.responseText);
                     alert('error');
                 }
             });
+        }
+
+        function editData(id) {
+
+            method = 'update';
+
+            $.ajax({
+                url: '<?= Base_url('/editkaryawan/'); ?>' + id,
+                type: 'GET',
+                dataType: 'JSON',
+                success: function(data) {
+                    $('[name="id"]').val(data.id);
+                    $('[name="nama"]').val(data.nama);
+                    $('[name="alamat"]').val(data.alamat);
+
+                    $('#id').prop('readonly', true);
+                    $('#modal-form').modal('show');
+                    $('#modal-title').text('Edit Data');
+                    $('.form-control').removeClass('is-invalid');
+                    $('.help-block').text('');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR.responseText);
+                    alert('error');
+                }
+            })
         }
     </script>
 

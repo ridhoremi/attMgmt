@@ -37,7 +37,7 @@
                     <div class="form-group row">
                         <label for="id" class="col-sm-2 col-form-label">ID </label>
                         <div class="col-sm-10">
-                            <input type="number" class="form-control" id="id" name="id">
+                            <input type="number" class="form-control" id="id" name="id" autofocus>
                             <span class="help-block text-danger"></span>
                         </div>
                     </div>

@@ -43,11 +43,11 @@ class KaryawanModel extends Model
         return $result;
     }
 
-    public function rulesValidasi($method = null, $id = null)
+    public function rulesValidasi($method = null)
     {
         // tentukan rule untuk id
         if ($method == 'update') {
-            $idRule = "required|is_unique[karyawan.id,id,$id]";
+            $idRule = "required";
         } else {
             $idRule = "required|is_unique[karyawan.id]";
         }

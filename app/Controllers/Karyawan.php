@@ -25,46 +25,45 @@ class Karyawan extends BaseController
 
     public function list()
     {
-        $draw = $_REQUEST['draw'];
+        $draw   = $_REQUEST['draw'];
         $length = $_REQUEST['length'];
-        $start = $_REQUEST['start'];
+        $start  = $_REQUEST['start'];
         $search = $_REQUEST['search']['value'];
 
         $total = $this->model->getTotal();
-        $output = [
-            'length' => $length,
-            // 'draw' => $draw,
-            'recordsTotal' => $total,
-            'recordsFiltered' => $total
-        ];
 
-        if ($search !== "") {
-            $list = $this->model->getTotalSearch($search, $start, $length);
+        if ($search != "") {
+            $list = $this->model->getDataSearch($search, $start, $length);
+            $totalFiltered = $this->model->getTotalSearch($search);
         } else {
             $list = $this->model->getData($start, $length);
-        }
-
-        if ($search !== "") {
-            $total_search = $this->model->getTotalSearch($search);
-            $output = [
-                'recordsTotal' => $total_search,
-                'recordsFiltered' => $total_search
-            ];
+            $totalFiltered = $total;
         }
 
         $data = [];
         $no = $start + 1;
+
         foreach ($list as $temp) {
-            $aksi = '<a href="javascript:void(0)" class="btn btn-warning" onclick="#"> Edit </a>';
+            $aksi = '<a href="javascript:void(0)" class="btn btn-warning btn-sm" onclick="editData(' . $temp['id'] . ')">Edit</a>
+                 <a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="deleteData(' . $temp['id'] . ')">Delete</a>';
+
             $row = [];
             $row[] = $no;
             $row[] = $temp['nama'];
             $row[] = $temp['alamat'];
             $row[] = $aksi;
+
             $data[] = $row;
             $no++;
         }
-        $output['data'] = $data;
+
+        $output = [
+            "draw" => intval($draw),
+            "recordsTotal" => $total,
+            "recordsFiltered" => $totalFiltered,
+            "data" => $data
+        ];
+
         echo json_encode($output);
         exit();
     }
@@ -95,9 +94,12 @@ class Karyawan extends BaseController
         ]);
     }
 
-    private function _validate($method = null, $id = null)
+
+    public function _validate($method = null)
     {
-        $rules = $this->model->rulesValidasi($method, $id);
+
+
+        $rules = $this->model->rulesValidasi($method);
 
         if (!$this->validate($rules)) {
 
@@ -112,5 +114,38 @@ class Karyawan extends BaseController
             echo json_encode($data);
             exit();
         }
+    }
+
+    public function edit($id)
+    {
+        $data = $this->model->find($id);
+        return $this->response->setJSON($data);
+    }
+
+    public function update()
+    {
+        // validasi (mode update)
+        $this->_validate('update');
+
+        $id = $this->request->getVar('id');
+
+        $data = [
+            'nama'   => $this->request->getVar('nama'),
+            'alamat' => $this->request->getVar('alamat'),
+        ];
+
+        $result = $this->model->update($id, $data);
+
+        if ($result === false) {
+            return $this->response->setJSON([
+                'status' => false,
+                'error'  => $this->model->errors(),
+                'db'     => $this->model->db->error()
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => true
+        ]);
     }
 }
