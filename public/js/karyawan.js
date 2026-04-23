@@ -2,7 +2,7 @@ var table;
 var method;
 $(document).ready(function () {
   table = $("#tabel1").DataTable({
-    processing: true,
+   // processing: true,
     serverSide: true,
     pageLength: 10,
     deferRender: true,

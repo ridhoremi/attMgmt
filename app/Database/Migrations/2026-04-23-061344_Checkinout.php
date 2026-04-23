@@ -4,31 +4,26 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Karyawan extends Migration
+class Checkinout extends Migration
 {
     public function up()
     {
         $this->forge->addField([
             'id' => [
                 'type'           => 'INT',
-                'constraint'     => 5,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'machine_id' => [
                 'type'       => 'INT',
-                'constraint' => 5,
+                'constraint' => '5',
             ],
             'user_id' => [
-                'type'       => 'INT',
-                'constraint' => 5,
+                'type' => 'INT',
+                'constraint' => '5',
             ],
-            'nama' => [
-                'type'       => 'VARCHAR',
-                'constraint' => 100,
-            ],
-            'alamat' => [
-                'type' => 'TEXT',
+            'checktime' => [
+                'type' => 'DATETIME',
                 'null' => true,
             ],
             'created_at' => [
@@ -40,17 +35,12 @@ class Karyawan extends Migration
                 'null' => true,
             ],
         ]);
-
         $this->forge->addKey('id', true);
-
-        // 🔥 biar tidak duplicate
-        $this->forge->addUniqueKey(['machine_id', 'user_id']);
-
-        $this->forge->createTable('karyawan');
+        $this->forge->createTable('checkinout');
     }
 
     public function down()
     {
-        $this->forge->dropTable('karyawan');
+        $this->forge->dropTable('checkinout');
     }
 }

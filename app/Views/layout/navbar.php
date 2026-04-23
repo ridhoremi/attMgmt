@@ -16,6 +16,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="/karyawan">Karyawan</a>
+                        <a class="dropdown-item" href="/absensi">Absensi</a>
 
                     </div>
                 </li>

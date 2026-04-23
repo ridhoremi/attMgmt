@@ -9,7 +9,7 @@ class Home extends BaseController
         $data = [
             'title' => 'Home',
             'content' => 'home'
-            
+
 
         ];
         return view('layout/template', $data);
