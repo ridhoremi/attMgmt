@@ -16,3 +16,6 @@ $routes->delete('/hapuskaryawan/(:num)', 'Karyawan::hapus/$1');
 
 $routes->get('/absensi', 'Absensi::index');
 $routes->post('/listabsensi', 'Absensi::list');
+$routes->get('/importabsensi', 'Importabsensi::index');
+
+$routes->post('importproses', 'Importabsensi::proses');
