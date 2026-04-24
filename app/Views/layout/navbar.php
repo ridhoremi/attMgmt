@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="/importabsensi">Att Management</a>
+        <a class="navbar-brand" href="javascript:void(0)" id="menuAttMgmt">Att Management</a>
+        <!-- <a class="navbar-brand" href="javascript:void(0)">Att Management</a> -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,7 +16,7 @@
                         Data
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="/karyawan">Karyawan</a>
+                        <a class="dropdown-item" href="javascript:void(0)" id="menuKaryawan">Karyawan</a>
                         <a class="dropdown-item" href="/absensi">Absensi</a>
 
                     </div>

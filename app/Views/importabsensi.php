@@ -46,24 +46,27 @@
                 </div>
 
                 <div class=" card-body">
-                    <table id="dtPreview" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>User ID</th>
-                                <th>Nama</th>
-                                <th>Checktime</th>
-                                <th>Machine</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
+                    <div class="table-responsive">
+                        <table id="dtPreview" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>User ID</th>
+                                    <th>Nama</th>
+                                    <th>Checktime</th>
+                                    <th>Machine</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
                 </div>
-
-
             </div>
         </div>
-    </div>

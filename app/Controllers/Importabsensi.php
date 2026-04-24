@@ -15,13 +15,12 @@ class Importabsensi extends BaseController
     }
 
 
-    public function index(): string
+    public function index()
     {
-        $data = [
-            'title' => 'Import Absensi',
-            'content' => 'importabsensi'
-        ];
-        return view('layout/template', $data);
+
+        if ($this->request->isAJAX()) {
+            return view('importabsensi');
+        }
     }
 
     public function import_file()

@@ -13,14 +13,18 @@ class Karyawan extends BaseController
         $this->model = new KaryawanModel();
     }
 
-    public function index(): string
+    public function index()
     {
-        $data = [
-            'title' => 'Data Karyawan',
-            'content' => 'karyawan'
+        // $data = [
+        //     'title' => 'Data Karyawan',
+        //     'content' => 'karyawan'
 
-        ];
-        return view('layout/template', $data);
+        // ];
+        // return view('layout/template', $data);
+
+        if ($this->request->isAJAX()) {
+            return view('karyawan');
+        }
     }
 
 
@@ -74,10 +78,26 @@ class Karyawan extends BaseController
 
 
         $this->_validate('insert');
+        $machine_id = $this->request->getVar('machine_id');
+        $user_id    = $this->request->getVar('user_id');
+
+        $cek = $this->model
+            ->where('machine_id', $machine_id)
+            ->where('user_id', $user_id)
+            ->first();
+
+        if ($cek) {
+            return $this->response->setJSON([
+                'status' => false,
+                'inputerror' => ['machine_id', 'user_id'],
+                'error_string' => ['Kombinasi Machine ID dan User ID sudah ada']
+            ]);
+        }
+
 
         $data = [
-            'machine_id' => $this->request->getVar('machine_id'),
-            'user_id' => $this->request->getVar('user_id'),
+            'machine_id' => $machine_id,
+            'user_id' => $user_id,
             'nama' => $this->request->getVar('nama'),
             'alamat' => $this->request->getVar('alamat'),
         ];

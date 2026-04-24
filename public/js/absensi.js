@@ -18,8 +18,16 @@ $(document).ready(function () {
     }
   });
 
-  dtPreview = $("#dtPreview").DataTable({
-        data: [], 
+});
+
+function initPreviewTable() {
+
+    if ($.fn.DataTable.isDataTable('#dtPreview')) {
+        $('#dtPreview').DataTable().destroy();
+    }
+
+    dtPreview = $('#dtPreview').DataTable({
+        data: [],
         columns: [
             { data: 'no' },
             { data: 'user_id' },
@@ -30,8 +38,8 @@ $(document).ready(function () {
         ]
     });
 
-     $('#btnSimpan').prop('disabled', true);
-});
+    $('#btnSimpan').prop('disabled', true);
+}
 
 function reloadTable() {
     dtAbsensi.ajax.reload();
