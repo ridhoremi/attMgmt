@@ -34,29 +34,42 @@
             <form action="#" id="form" enctype="multipart/form-data">
                 <div class="modal-body">
 
+                    <input type="hidden" id="id" name="id">
+
                     <div class="form-group row">
-                        <label for="id" class="col-sm-2 col-form-label">ID </label>
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="id" name="id" autofocus>
+                        <label for="no_mesin" class="col-sm-3 col-form-label">No Mesin</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="machine_id" name="machine_id">
+                                <option value="">-- Pilih Mesin --</option>
+                                <option value="1">Mesin Belakang</option>
+                                <option value="2">Mesin Depan</option>
+                            </select>
                             <span class="help-block text-danger"></span>
                         </div>
                     </div>
+
                     <div class="form-group row">
-                        <label for="nama" class="col-sm-2 col-form-label">Nama </label>
-                        <div class="col-sm-10">
+                        <label for="userid" class="col-sm-3 col-form-label">User ID</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="user_id" name="user_id">
+                            <span class="help-block text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="nama" class="col-sm-3 col-form-label">Nama</label>
+                        <div class="col-sm-9">
                             <input type="text" class="form-control" id="nama" name="nama">
                             <span class="help-block text-danger"></span>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="alamat" name="alamat">
 
+                    <div class="form-group row">
+                        <label for="alamat" class="col-sm-3 col-form-label">Alamat</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="alamat" name="alamat"></textarea>
                         </div>
                     </div>
-
-
                 </div>
             </form>
             <div class="modal-footer">

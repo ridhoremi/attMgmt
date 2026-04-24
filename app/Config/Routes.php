@@ -19,3 +19,4 @@ $routes->post('/listabsensi', 'Absensi::list');
 $routes->get('/importabsensi', 'Importabsensi::index');
 
 $routes->post('importproses', 'Importabsensi::proses');
+$routes->post('/import-absensi', 'Importabsensi::import_file');

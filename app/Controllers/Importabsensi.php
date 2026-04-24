@@ -11,60 +11,59 @@ class Importabsensi extends BaseController
             'content' => 'importabsensi'
 
 
+
         ];
         return view('layout/template', $data);
     }
 
-    // public function proses()
-    // {
-    //     $file = $this->request->getFile('file');
+    public function import_file()
+    {
+        $file = $this->request->getFile('file');
+        $machine_id = $this->request->getVar('machine_id');
 
-    //     // cek file valid
-    //     if (!$file->isValid()) {
-    //         return "File tidak valid";
-    //     }
+        if (!$file || !$file->isValid()) {
+            return "File tidak valid";
+        }
 
-    //     // baca isi file
-    //     $path = $file->getTempName();
-    //     $lines = file($path);
+        $path = $file->getTempName();
+        $content = file_get_contents($path);
+        $lines = preg_split('/\r\n|\r|\n/', $content);
 
-    //     $result = [];
-    //     $no = 1;
+        $result = [];
+        $no = 1;
 
-    //     foreach ($lines as $line) {
+        foreach ($lines as $line) {
 
-    //         $line = trim($line);
-    //         if ($line == '') continue;
+            $line = trim($line);
+            if ($line == '') continue;
 
-    //         // pecah data (support spasi / tab)
-    //         $data = preg_split('/\s+/', $line);
+            $data = preg_split('/\s+/', $line);
 
-    //         $user_id = $data[0] ?? '';
-    //         $date    = $data[1] ?? '';
-    //         $time    = $data[2] ?? '';
-    //         $machine = $data[3] ?? '';
-    //         $status  = $data[4] ?? '';
+            $user_id = $data[0] ?? '';
+            $date    = $data[1] ?? '';
+            $time    = $data[2] ?? '';
+            // $machine = $data[3] ?? '';
+            $status = $data[4] ?? ' ';
+            $checktime = $date . ' ' . $time;
 
-    //         $checktime = $date . ' ' . $time;
 
-    //         $result[] = [
-    //             'no' => $no,
-    //             'user_id' => $user_id,
-    //             'checktime' => $checktime,
-    //             'machine' => $machine,
-    //             'status' => $status
-    //         ];
+            $result[] = [
+                'no'        => $no,
+                'user_id'   => $user_id,
+                'checktime' => $checktime,
+                'machine'   => $machine_id,
+                'status'    => $status
+            ];
 
-    //         $no++;
-    //     }
-    //     $data = [
-    //         'title'   => 'Import Absensi',
-    //         'content' => 'importabsensi',
-    //         'data'    => $result
-    //     ];
+            $no++;
+        }
 
-    //     return view('layout/template', $data);
-    // }
+        return view('layout/template', [
+            'title'   => 'Preview Import Absensi',
+            'content' => 'importabsensi',
+            'data'    => $result
+        ]);
+    }
 
     public function proses()
     {
@@ -96,7 +95,7 @@ class Importabsensi extends BaseController
 
             $checktime = $date . ' ' . $time;
 
-            // 🔥 CEK biar gak double
+
             $cek = $db->query("
             SELECT id FROM checkinout 
             WHERE user_id = '$user_id' 

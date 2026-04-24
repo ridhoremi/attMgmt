@@ -9,19 +9,19 @@ class KaryawanModel extends Model
 
     protected $table      = 'karyawan';
     protected $useTimestamps = false;
-    protected $allowedFields = ['id', 'nama', 'alamat'];
+    protected $allowedFields = ['id', 'machine_id', 'user_id', 'nama', 'alamat'];
 
 
     public function getData($start, $length)
     {
-        $result = $this->orderBy('id', 'asc')
+        $result = $this->orderBy('nama', 'asc')
             ->findAll($length, $start);
 
         return $result;
     }
     public function getDataSearch($search, $start, $length)
     {
-        $result = $this->like('nama', $search)->orLike('id', $search)->findAll($start, $length);
+        $result = $this->like('nama', $search)->orLike('user_id', $search)->findAll($start, $length);
 
         return $result;
     }
@@ -38,34 +38,38 @@ class KaryawanModel extends Model
 
     public function getTotalSearch($search)
     {
-        $result = $this->like('nama', $search)->orLike('id', $search)->countAllResults();
+        $result = $this->like('nama', $search)->orLike('user_id', $search)->countAllResults();
 
         return $result;
     }
 
     public function rulesValidasi($method = null)
     {
-        // tentukan rule untuk id
-        if ($method == 'update') {
-            $idRule = "required";
-        } else {
-            $idRule = "required|is_unique[karyawan.id]";
-        }
         $rulesValidation = [
-            'id' => [
-                'rules' => $idRule,
+            'machine_id' => [
+                'rules' => 'required',
                 'errors' => [
-                    'required' => '{field} Harus di isi.',
-                    'is_unique' => '{field} Sudah digunakan.'
+                    'required' => 'No Mesin harus diisi.'
+                ]
+            ],
+            'user_id' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'User ID harus diisi.'
                 ]
             ],
             'nama' => [
                 'rules' => 'required',
                 'errors' => [
-                    'required' => '{field} Harus di isi.'
+                    'required' => 'Nama harus diisi.'
                 ]
             ],
-
+            'alamat' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Alamat harus diisi.'
+                ]
+            ],
         ];
 
         return $rulesValidation;

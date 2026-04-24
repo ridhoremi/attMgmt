@@ -29,7 +29,6 @@ function simpan() {
     url = BASE_URL + "/simpankaryawan";
   } else {
     url = BASE_URL + "/updatekaryawan";
-    // url = '<?= Base_url('/updatekaryawan'); ?>';
   }
   $.ajax({
     url: url,
@@ -42,11 +41,13 @@ function simpan() {
       if (data.status) {
         $("#form")[0].reset();
         $("#modal-form").modal("hide");
+        
         table.ajax.reload();
       } else {
         for (var i = 0; i < data.inputerror.length; i++) {
           $('[name="' + data.inputerror[i] + '"]').addClass("is-invalid");
           $('[name="' + data.inputerror[i] + '"]')
+       
             .next(".help-block")
             .text(data.error_string[i]);
         }
@@ -68,6 +69,8 @@ function editData(id) {
     dataType: "JSON",
     success: function (data) {
       $('[name="id"]').val(data.id);
+      $('[name=machine_id').val(data.machine_id)
+      $('[name="user_id"]').val(data.user_id);
       $('[name="nama"]').val(data.nama);
       $('[name="alamat"]').val(data.alamat);
 

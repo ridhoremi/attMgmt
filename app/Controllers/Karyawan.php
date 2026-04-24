@@ -72,11 +72,12 @@ class Karyawan extends BaseController
     public function simpan()
     {
 
-        //validasi 
+
         $this->_validate('insert');
 
         $data = [
-            'id' => $this->request->getVar('id'),
+            'machine_id' => $this->request->getVar('machine_id'),
+            'user_id' => $this->request->getVar('user_id'),
             'nama' => $this->request->getVar('nama'),
             'alamat' => $this->request->getVar('alamat'),
         ];
