@@ -18,5 +18,6 @@ $routes->get('/absensi', 'Absensi::index');
 $routes->post('/listabsensi', 'Absensi::list');
 $routes->get('/importabsensi', 'Importabsensi::index');
 
-$routes->post('importproses', 'Importabsensi::proses');
+$routes->post('/importproses', 'Importabsensi::proses_import');
 $routes->post('/import-absensi', 'Importabsensi::import_file');
+$routes->post('/simpan-absensi', 'Importabsensi::simpan_absensi');

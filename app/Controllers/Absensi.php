@@ -36,13 +36,6 @@ class Absensi extends BaseController
 
         $total = $this->model->getTotal();
 
-        // if ($search != "") {
-        //     $list = $this->model->getDataSearch($search, $start, $length);
-        //     $totalFiltered = $this->model->getTotalSearch($search);
-        // } else {
-        //     $list = $this->model->getData($start, $length);
-        //     $totalFiltered = $total;
-        // }
 
         if ($search != "" || $startDate || $endDate) {
             $list = $this->model->getDataFilter($search, $startDate, $endDate, $start, $length);
@@ -54,15 +47,12 @@ class Absensi extends BaseController
 
         $data = [];
         $no = $start + 1;
-
         foreach ($list as $temp) {
-
             $row = [];
             $row[] = $no;
             $row[] = $temp['nama'];
             $row[] = $temp['checktime'];
             $row[] = $temp['machine_id'];
-
             $data[] = $row;
             $no++;
         }
