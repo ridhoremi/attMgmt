@@ -6,9 +6,9 @@
             <div class="card card-custom p-3 mb-3">
                 <div class="form-row align-items-center">
 
-                    <!-- Tanggal Dari -->
+
                     <div class="col-auto">
-                        <input type="date" id="startDate" class="form-control" value="2026-04-01">
+                        <input type="date" id="startDate" value="<?= date('Y-m-01') ?>">
                     </div>
 
                     <div class="col-auto">
@@ -17,7 +17,7 @@
 
                     <!-- Tanggal Sampai -->
                     <div class="col-auto">
-                        <input type="date" id="endDate" class="form-control" value="2026-04-30">
+                        <input type="date" id="endDate" value="<?= date('Y-m-t') ?>">
                     </div>
 
                     <!-- Input Search
@@ -39,9 +39,10 @@
             <table id="dtTabel" class="table table-bordered mb-0">
                 <thead>
                     <tr>
-                        <th width="100">No</th>
+                        <th width="80">No</th>
                         <th>Nama Karyawan</th>
-                        <th width="200">Tanggal Absen</th>
+                        <th>Tanggal Absen</th>
+                        <th class="text-center" width="100">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>

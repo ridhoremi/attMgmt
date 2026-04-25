@@ -54,7 +54,8 @@ class Importabsensi extends BaseController
             $checktime = $date . ' ' . $time;
 
             $karyawan = $karyawanModel
-                ->where('id', $user_id)
+                ->where('user_id', $user_id)
+                ->where('machine_id', $machine_id)
                 ->first();
 
             $nama = $karyawan ? $karyawan['nama'] : 'TIDAK DITEMUKAN';

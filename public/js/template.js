@@ -15,3 +15,13 @@ $(document).on('click', '#menuKaryawan', function (e) {
         initKaryawan();
     });
 });
+
+$(document).on('click', '#menuAbsensi', function (e) {
+    e.preventDefault();
+
+    $('#content').load(BASE_URL + '/absensi', function () {
+        document.title = 'Data Absensi';
+        initDataAbsensi();
+    });
+});
+

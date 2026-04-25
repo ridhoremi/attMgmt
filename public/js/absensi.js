@@ -2,23 +2,43 @@ var dtAbsensi;
 var dtPreview;
 
 var method;
-$(document).ready(function () {
-  dtAbsensi= $("#dtTabel").DataTable({
-    //processing: true,
+// $(document).ready(function () {
+//   dtAbsensi= $("#dtTabel").DataTable({
+//     //processing: true,
+//     serverSide: true,
+//     pageLength: 10,
+//     deferRender: true,
+//     ajax: {
+//       url: BASE_URL + "/listabsensi",
+//         type: "POST",
+//         data: function (d) {
+//             d.startDate = $('#startDate').val();
+//             d.endDate   = $('#endDate').val();
+//         }
+//     }
+//   });
+
+// });
+
+function initDataAbsensi() {
+  if ($.fn.DataTable.isDataTable("#dtTabel")) {
+    $("#dtTabel").DataTable().destroy();
+  }
+
+  dtAbsensi = $("#dtTabel").DataTable({
     serverSide: true,
     pageLength: 10,
     deferRender: true,
     ajax: {
       url: BASE_URL + "/listabsensi",
-        type: "POST",
-        data: function (d) {
-            d.startDate = $('#startDate').val();
-            d.endDate   = $('#endDate').val();
-        }
+      type: "POST",
+      data: function (d) {
+        d.start_date = $("#startDate").val();
+        d.end_date = $("#endDate").val();
+      }
     }
   });
-
-});
+}
 
 function initPreviewTable() {
 
@@ -99,7 +119,7 @@ function simpanData(){
            
         },
         success: function(res){
-            alert("Berhasil simpan");
+             Swal.fire("Berhasil!", "Data Impor Berhasil Disimpan.", "success");
 
             dtAbsensi.ajax.reload();
             dtPreview.clear().draw();
