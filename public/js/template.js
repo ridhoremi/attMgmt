@@ -25,3 +25,12 @@ $(document).on('click', '#menuAbsensi', function (e) {
     });
 });
 
+$(document).on('click', '#menuJamkerja', function (e) {
+    e.preventDefault();
+
+    $('#content').load(BASE_URL + '/settingJamkerja', function () {
+        document.title = 'Setting Jam Kerja (Shift)';
+       initDataShift();
+    });
+});
+

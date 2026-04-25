@@ -34,7 +34,6 @@ class Karyawan extends BaseController
         $length = $_REQUEST['length'];
         $start  = $_REQUEST['start'];
         $search = $_REQUEST['search']['value'];
-
         $total = $this->model->getTotal();
 
         if ($search != "") {

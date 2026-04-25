@@ -75,16 +75,12 @@ class Absensi extends BaseController
     public function list()
     {
         $request = service('request');
-
         $startDate = $request->getPost('start_date');
         $endDate   = $request->getPost('end_date');
-
         $draw   = $request->getPost('draw');
         $length = $request->getPost('length');
         $start  = $request->getPost('start');
-
         $search = $request->getPost('search')['value'] ?? '';
-
         $total = $this->model->getTotal();
 
         if ($search != "" || (!empty($startDate) && !empty($endDate))) {
@@ -94,20 +90,17 @@ class Absensi extends BaseController
             $list = $this->model->getData($start, $length);
             $totalFiltered = $total;
         }
-
         $data = [];
         $no = $start + 1;
 
         foreach ($list as $temp) {
             $aksi = '<a href="javascript:void(0)" class="btn btn-danger btn-sm" onclick="hapusData(' . $temp['id'] . ')">Delete</a>';
-
             $data[] = [
                 $no++,
                 $temp['nama'],
                 $temp['checktime'],
                 $aksi,
                 $temp['machine_id']
-
             ];
         }
 

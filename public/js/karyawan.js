@@ -63,7 +63,6 @@ function simpan() {
         for (var i = 0; i < data.inputerror.length; i++) {
           $('[name="' + data.inputerror[i] + '"]').addClass("is-invalid");
           $('[name="' + data.inputerror[i] + '"]')
-       
             .next(".help-block")
             .text(data.error_string[i]);
         }

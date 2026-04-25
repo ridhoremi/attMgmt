@@ -12,17 +12,25 @@
                 </li>
 
                 <li class="nav-item dropdown">
-
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Data
                     </a>
-
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="javascript:void(0)" id="menuKaryawan">Karyawan</a>
                         <a class="dropdown-item" href="javascript:void(0)" id="menuAbsensi">Absensi</a>
                     </div>
-
                 </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Pengaturan
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="javascript:void(0)" id="menuJamkerja">Jam Kerja</a>
+                    </div>
+                </li>
+
+
             </ul>
         </div>
     </div>

@@ -16,7 +16,7 @@ class AbsensiModel extends Model
     {
         return $this->db->table('checkinout c')
             ->select('c.id, c.checktime, c.machine_id, k.nama')
-            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'left')
+            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'inner')
             ->limit($length, $start)
             ->orderBy('c.checktime', 'DESC')
             ->get()
@@ -26,7 +26,7 @@ class AbsensiModel extends Model
     public function getTotal()
     {
         return $this->db->table('checkinout c')
-            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'left')
+            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'inner')
             ->countAllResults();
     }
 
@@ -34,9 +34,9 @@ class AbsensiModel extends Model
     {
         $builder = $this->db->table('checkinout c')
             ->select('c.id, c.checktime, c.machine_id, k.nama')
-            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'left');
+            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'inner');
 
-        // 🔥 filter range tanggal
+
         if ($startDate && $endDate) {
             $builder->where('DATE(c.checktime) >=', $startDate);
             $builder->where('DATE(c.checktime) <=', $endDate);
@@ -60,7 +60,7 @@ class AbsensiModel extends Model
     public function getTotalFilter($search, $startDate, $endDate)
     {
         $builder = $this->db->table('checkinout c')
-            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'left');
+            ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'inner');
 
         if ($startDate && $endDate) {
             $builder->where('DATE(c.checktime) >=', $startDate);
