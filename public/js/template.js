@@ -34,3 +34,12 @@ $(document).on('click', '#menuJamkerja', function (e) {
     });
 });
 
+$(document).on('click', '#menuJadwalKerja', function (e) {
+    e.preventDefault();
+
+    $('#content').load(BASE_URL + '/settingJamkerja', function () {
+        document.title = 'Setting Jam Kerja (Shift)';
+       initDataShift();
+    });
+});
+

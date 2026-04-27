@@ -1,21 +1,28 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col">
-            <h1 class="text-center">DAFTAR KARYAWAN</h1>
-            <a href="javascript:void(0)" class="btn btn-primary mt-3 mb-3" onclick="tampil_form()"> Tambah Data </a>
-            <table id="tabel1" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Nama</th>
-                        <th scope="col">Alamat</th>
-                        <th scope="col">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <hr>
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Data Karyawan</h5>
+                </div>
+                <div class="card-body">
+                    <a href="javascript:void(0)" class="btn btn-primary mt-3 mb-3" onclick="tampil_form()"> Tambah Data </a>
+                    <table id="tabel1" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Alamat</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                </tbody>
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

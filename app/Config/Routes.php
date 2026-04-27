@@ -29,3 +29,5 @@ $routes->post('/simpanShift', 'Shift::simpan');
 $routes->get('/editshift/(:num)', 'Shift::edit/$1');
 $routes->post('/updateshift', 'Shift::update');
 $routes->delete('/hapusshift/(:num)', 'Shift::hapus/$1');
+
+$routes->get('/jadwal', 'Jadwal::index');

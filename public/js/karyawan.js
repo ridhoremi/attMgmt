@@ -22,6 +22,7 @@ function initKaryawan() {
     serverSide: true,
     pageLength: 10,
     deferRender: true,
+    searching: true,
     ajax: {
       url: BASE_URL + "/listkaryawan",
       type: "GET",
