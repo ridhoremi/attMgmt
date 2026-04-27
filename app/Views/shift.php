@@ -11,9 +11,7 @@
 
                     <div class="d-flex justify-content-between align-items-center">
 
-                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalShift">
-                            <i class="fa fa-plus"></i> Tambah Shift
-                        </button>
+                        <a href="javascript:void(0)" class="btn btn-primary mt-3 mb-3" onclick="form_shift()"> Tambah Data </a>
 
                         <div style="width:200px;">
                             <select id="" class="form-control form-control-sm">
@@ -33,7 +31,7 @@
                                     <th>Mesin</th>
                                     <th>Jam Masuk</th>
                                     <th>Jam Keluar</th>
-                                    <th width="15%" class="text-center">Aksi</th>
+                                    <th width="100px" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                         </table>
@@ -49,7 +47,7 @@
 
                         <!-- HEADER -->
                         <div class="modal-header bg-primary text-white">
-                            <h5 class="modal-title">Tambah Shift</h5>
+                            <h5 class="modal-title" id="modal_titel-shift"></h5>
                             <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
                         </div>
 
@@ -57,29 +55,35 @@
                         <div class="modal-body">
                             <form id="formShift">
 
-                                <div class="form-group">
+                                <input type="hidden" id="id_shift" name="id_shift">
+
+                                <div class="form-group" id="formShift">
                                     <label>Nama Shift</label>
-                                    <input type="text" name="nama_shift" class="form-control" required>
+                                    <input type="text" name="nama_shift" id="nama_shift" class="form-control" required>
+                                    <span class="help-block text-danger"></span>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Mesin</label>
-                                    <select id="filter_machine" class="form-control form-control-sm">
+                                    <select id="machine_id_shift" name="machine_id_shift" class="form-control form-control-sm">
                                         <option value="">-- Pilih Mesin --</option>
                                         <option value="2">Mesin Depan</option>
                                         <option value="1">Mesin Belakang</option>
                                     </select>
+                                    <span class="help-block text-danger"></span>
                                 </div>
 
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label>Jam Masuk</label>
-                                        <input type="time" name="jam_masuk" class="form-control" required>
+                                        <input type="time" id="jam_masuk" name="jam_masuk" class="form-control" required>
+                                        <span class="help-block text-danger"></span>
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label>Jam Keluar</label>
-                                        <input type="time" name="jam_keluar" class="form-control" required>
+                                        <input type="time" id="jam_keluar" name="jam_keluar" class="form-control" required>
+                                        <span class="help-block text-danger"></span>
                                     </div>
                                 </div>
 

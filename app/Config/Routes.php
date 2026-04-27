@@ -23,4 +23,9 @@ $routes->post('/import-absensi', 'Importabsensi::import_file');
 $routes->post('/simpan-absensi', 'Importabsensi::simpan_absensi');
 
 $routes->get('/settingJamkerja', 'Shift::index');
-$routes->post('/listshift', 'Shift::list');
+$routes->get('/listshift', 'Shift::list');
+$routes->post('/simpanShift', 'Shift::simpan');
+
+$routes->get('/editshift/(:num)', 'Shift::edit/$1');
+$routes->post('/updateshift', 'Shift::update');
+$routes->delete('/hapusshift/(:num)', 'Shift::hapus/$1');

@@ -42,7 +42,6 @@ class AbsensiModel extends Model
             $builder->where('DATE(c.checktime) <=', $endDate);
         }
 
-        // 🔍 search
         if ($search) {
             $builder->groupStart()
                 ->like('k.nama', $search)
