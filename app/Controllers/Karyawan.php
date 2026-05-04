@@ -72,69 +72,108 @@ class Karyawan extends BaseController
         exit();
     }
 
+    // public function simpan()
+    // {
+
+
+    //     $this->_validate('insert');
+    //     $machine_id = $this->request->getVar('machine_id');
+    //     $user_id    = $this->request->getVar('user_id');
+
+    //     $cek = $this->model
+    //         ->where('machine_id', $machine_id)
+    //         ->where('user_id', $user_id)
+    //         ->first();
+
+    //     if ($cek) {
+    //         return $this->response->setJSON([
+    //             'status' => false,
+    //             'inputerror' => ['machine_id', 'user_id'],
+    //             'error_string' => ['Kombinasi Machine ID dan User ID sudah ada']
+    //         ]);
+    //     }
+
+
+    //     $data = [
+    //         'machine_id' => $machine_id,
+    //         'user_id' => $user_id,
+    //         'nama' => $this->request->getVar('nama'),
+    //         'alamat' => $this->request->getVar('alamat'),
+    //     ];
+    //     $result = $this->model->insert($data);
+
+    //     if ($result === false) {
+    //         return $this->response->setJSON([
+    //             'status' => false,
+    //             'error' => $this->model->errors(),
+    //             'db' => $this->model->db->error()
+    //         ]);
+    //     }
+    //     return $this->response->setJSON([
+    //         'status' => true,
+    //         'insert_id' => $result
+    //     ]);
+    // }
+
     public function simpan()
     {
+        $validasi = $this->_validate('insert');
 
 
-        $this->_validate('insert');
-        $machine_id = $this->request->getVar('machine_id');
-        $user_id    = $this->request->getVar('user_id');
-
-        $cek = $this->model
-            ->where('machine_id', $machine_id)
-            ->where('user_id', $user_id)
-            ->first();
-
-        if ($cek) {
-            return $this->response->setJSON([
-                'status' => false,
-                'inputerror' => ['machine_id', 'user_id'],
-                'error_string' => ['Kombinasi Machine ID dan User ID sudah ada']
-            ]);
+        if ($validasi !== true) {
+            return $validasi;
         }
 
 
         $data = [
-            'machine_id' => $machine_id,
-            'user_id' => $user_id,
-            'nama' => $this->request->getVar('nama'),
-            'alamat' => $this->request->getVar('alamat'),
+            'machine_id' => $this->request->getPost('machine_id'),
+            'user_id'    => $this->request->getPost('user_id'),
+            'nama'       => $this->request->getPost('nama'),
+            'alamat'     => $this->request->getPost('alamat'),
         ];
-        $result = $this->model->insert($data);
 
-        if ($result === false) {
-            return $this->response->setJSON([
-                'status' => false,
-                'error' => $this->model->errors(),
-                'db' => $this->model->db->error()
-            ]);
-        }
-        return $this->response->setJSON([
-            'status' => true,
-            'insert_id' => $result
-        ]);
+        $result = $this->model->simpan($data);
+
+        return $this->response->setJSON($result);
     }
 
+    // public function _validate($method = null)
+    // {
+
+
+    //     $rules = $this->model->rulesValidasi($method);
+
+    //     if (!$this->validate($rules)) {
+
+    //         $errors = $this->validator->getErrors();
+
+    //         $data = [
+    //             'status' => false,
+    //             'inputerror' => array_keys($errors),
+    //             'error_string' => array_values($errors)
+    //         ];
+
+    //         echo json_encode($data);
+    //         exit();
+    //     }
+    // }
 
     public function _validate($method = null)
     {
-
-
         $rules = $this->model->rulesValidasi($method);
 
         if (!$this->validate($rules)) {
 
             $errors = $this->validator->getErrors();
 
-            $data = [
+            return $this->response->setJSON([
                 'status' => false,
                 'inputerror' => array_keys($errors),
                 'error_string' => array_values($errors)
-            ];
-
-            echo json_encode($data);
-            exit();
+            ]);
         }
+
+        return true;
     }
 
     public function edit($id)

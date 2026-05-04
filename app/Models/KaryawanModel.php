@@ -74,4 +74,39 @@ class KaryawanModel extends Model
 
         return $rulesValidation;
     }
+
+    public function simpan($data)
+    {
+        // Cek duplikat kombinasi
+        $cek = $this->where('machine_id', $data['machine_id'])
+            ->where('user_id', $data['user_id'])
+            ->first();
+
+        if ($cek) {
+            return [
+                'status' => false,
+                'inputerror' => ['machine_id', 'user_id'],
+                'error_string' => [
+                    'Kombinasi Machine ID dan User ID sudah ada',
+                    'Kombinasi Machine ID dan User ID sudah ada'
+                ]
+            ];
+        }
+
+        // Insert data
+        $insert = $this->insert($data);
+
+        if (!$insert) {
+            return [
+                'status' => false,
+                'message' => 'Gagal insert data',
+                'error' => $this->errors()
+            ];
+        }
+
+        return [
+            'status' => true,
+            'insert_id' => $insert
+        ];
+    }
 }
