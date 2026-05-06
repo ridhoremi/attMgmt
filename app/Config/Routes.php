@@ -31,3 +31,4 @@ $routes->post('/updateshift', 'Shift::update');
 $routes->delete('/hapusshift/(:num)', 'Shift::hapus/$1');
 
 $routes->get('/jadwal', 'Jadwal::index');
+$routes->get('/jadwalkaryawan', 'Jadwal::grid');

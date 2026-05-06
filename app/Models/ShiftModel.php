@@ -12,7 +12,7 @@ class ShiftModel extends Model
     protected $allowedFields = ['id', 'nama_shift', 'jam_masuk', 'jam_keluar', 'machine_id'];
 
 
-    public function getData($start, $length)
+    public function getData($start = null, $length = null)
     {
 
         $result = $this->db->table('shift s')
@@ -58,7 +58,7 @@ class ShiftModel extends Model
             ->countAllResults();
     }
 
-    public function getTotalSearch($search)
+    public function getTotalSearch($search = null)
     {
         // $result = $this->like('nama_shift', $search)->countAllResults();
         // return $result;
@@ -108,5 +108,70 @@ class ShiftModel extends Model
         ];
 
         return $rulesValidation;
+    }
+
+    public function simpanData($data = null)
+    {
+
+        $insert = $this->insert($data);
+
+        if (!$insert) {
+            return [
+                'status' => false,
+                'message' => 'Gagal insert data',
+                'error' => $this->errors()
+            ];
+        }
+        return [
+            'status' => true,
+            'insert_id' => $insert
+        ];
+    }
+
+    public function ubahData($id = null, $data = null)
+    {
+        $result = $this->update($id, $data);
+        if (!$result) {
+            return [
+                'status' => false,
+                'message' => 'Gagal Update data',
+                'error' => $this->errors()
+            ];
+        }
+        return [
+            'status' => true
+        ];
+    }
+
+    public function getDataById($id = null)
+    {
+        $data = $this->find($id);
+        if (!$data) {
+            return [
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ];
+        }
+        return [
+            'status' => true,
+            'data' => $data
+        ];
+    }
+
+    public function hapusData($id = null)
+    {
+
+        $result = $this->delete($id);
+        if (!$result) {
+            return [
+                'status' => false,
+                'message' => 'Gagal menghapus data'
+            ];
+        }
+
+        return [
+            'status' => true,
+            'message' => 'Data berhasil Dihapus'
+        ];
     }
 }

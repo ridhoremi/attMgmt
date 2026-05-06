@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Override;
 
 class KaryawanModel extends Model
 {
@@ -12,14 +13,14 @@ class KaryawanModel extends Model
     protected $allowedFields = ['id', 'machine_id', 'user_id', 'nama', 'alamat'];
 
 
-    public function getData($start, $length)
+    public function getData($start = null, $length = null)
     {
         $result = $this->orderBy('nama', 'asc')
             ->findAll($length, $start);
 
         return $result;
     }
-    public function getDataSearch($search, $start, $length)
+    public function getDataSearch($search = null, $start = null, $length = null)
     {
         $result = $this->like('nama', $search)->orLike('user_id', $search)->findAll($start, $length);
 
@@ -36,7 +37,7 @@ class KaryawanModel extends Model
         return 0;
     }
 
-    public function getTotalSearch($search)
+    public function getTotalSearch($search = null)
     {
         $result = $this->like('nama', $search)->orLike('user_id', $search)->countAllResults();
 
@@ -75,9 +76,8 @@ class KaryawanModel extends Model
         return $rulesValidation;
     }
 
-    public function simpan($data)
+    public function simpan($data = null)
     {
-        // Cek duplikat kombinasi
         $cek = $this->where('machine_id', $data['machine_id'])
             ->where('user_id', $data['user_id'])
             ->first();
@@ -92,8 +92,6 @@ class KaryawanModel extends Model
                 ]
             ];
         }
-
-        // Insert data
         $insert = $this->insert($data);
 
         if (!$insert) {
@@ -103,10 +101,55 @@ class KaryawanModel extends Model
                 'error' => $this->errors()
             ];
         }
-
         return [
             'status' => true,
             'insert_id' => $insert
+        ];
+    }
+
+    public function ubah($id = null, $data = null)
+    {
+        $cek = $this->where('machine_id', $data['machine_id'])
+            ->where('user_id', $data['user_id'])
+            ->where('id !=', $id)
+            ->first();
+
+        if ($cek) {
+            return [
+                'status' => false,
+                'inputerror' => ['machine_id', 'user_id'],
+                'error_string' => [
+                    'Kombinasi Machine ID dan User ID sudah ada',
+                    'Kombinasi Machine ID dan User ID sudah ada'
+                ]
+            ];
+        }
+        $result = $this->update($id, $data);
+        if (!$result) {
+            return [
+                'status' => false,
+                'message' => 'Gagal Update data',
+                'error' => $this->errors()
+            ];
+        }
+        return [
+            'status' => true
+        ];
+    }
+
+    public function hapus($id = null)
+    {
+
+        $result = $this->delete($id);
+        if (!$result) {
+            return [
+                'status' => false,
+                'message' => 'Gagal menghapus data'
+            ];
+        }
+
+        return [
+            'status' => true
         ];
     }
 }

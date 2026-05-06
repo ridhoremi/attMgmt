@@ -7,7 +7,7 @@ use App\Models\ShiftModel;
 class Shift extends BaseController
 {
 
-    protected $model;
+    protected ShiftModel $model;
     public function __construct()
     {
         $this->model = new ShiftModel();
@@ -82,12 +82,12 @@ class Shift extends BaseController
         $this->_validate('insert');
 
         $data = [
-            'nama_shift' => $this->request->getVar('nama_shift'),
-            'jam_masuk' => $this->request->getVar('jam_masuk'),
-            'jam_keluar' => $this->request->getVar('jam_keluar'),
-            'machine_id' => $this->request->getVar('machine_id_shift'),
+            'nama_shift' => $this->request->getPost('nama_shift'),
+            'jam_masuk' => $this->request->getPost('jam_masuk'),
+            'jam_keluar' => $this->request->getPost('jam_keluar'),
+            'machine_id' => $this->request->getPost('machine_id_shift'),
         ];
-        $result = $this->model->insert($data);
+        $result = $this->model->simpanData($data);
 
         if ($result === false) {
             return $this->response->setJSON([
@@ -104,49 +104,37 @@ class Shift extends BaseController
 
     public function _validate($method = null)
     {
-
-
         $rules = $this->model->rulesValidasi($method);
-
         if (!$this->validate($rules)) {
-
             $errors = $this->validator->getErrors();
-
             $data = [
                 'status' => false,
                 'inputerror' => array_keys($errors),
                 'error_string' => array_values($errors)
             ];
-
             echo json_encode($data);
             exit();
         }
     }
 
-    public function edit($id)
+    public function edit($id = null)
     {
-        $data = $this->model->find($id);
+        $data = $this->model->getDataById($id);
         return $this->response->setJSON($data);
     }
 
-
     public function update()
     {
-
         $this->_validate('update');
-
-        $id = $this->request->getVar('id_shift');
-
+        $id = $this->request->getPost('id_shift');
         $data = [
-            'nama_shift' => $this->request->getVar('nama_shift'),
-            'jam_masuk' => $this->request->getVar('jam_masuk'),
-            'jam_keluar' => $this->request->getVar('jam_keluar'),
-            'machine_id' => $this->request->getVar('machine_id_shift'),
+            'nama_shift' => $this->request->getPost('nama_shift'),
+            'jam_masuk' => $this->request->getPost('jam_masuk'),
+            'jam_keluar' => $this->request->getPost('jam_keluar'),
+            'machine_id' => $this->request->getPost('machine_id_shift'),
         ];
 
-
-        $result = $this->model->update($id, $data);
-
+        $result = $this->model->ubahData($id, $data);
         if ($result === false) {
             return $this->response->setJSON([
                 'status' => false,
@@ -154,26 +142,25 @@ class Shift extends BaseController
                 'db'     => $this->model->db->error()
             ]);
         }
-
         return $this->response->setJSON([
             'status' => true
         ]);
     }
 
-    public function hapus($id)
+    public function hapus($id = null)
     {
-
-        $result = $this->model->delete($id);
+        $result = $this->model->hapusData($id);
         if ($result === false) {
             return $this->response->setJSON([
                 'status' => false,
                 'error'  => $this->model->errors(),
-                'db'     => $this->model->db->error()
+                'db'     => $this->model->db->error(),
+                'message' => 'Gagal menghapus data'
             ]);
         }
-
         return $this->response->setJSON([
-            'status' => true
+            'status' => true,
+            'message' => 'Hapus Data Berhasil'
         ]);
     }
 }

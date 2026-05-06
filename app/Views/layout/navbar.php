@@ -27,7 +27,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="javascript:void(0)" id="menuJamkerja">Data Shift</a>
-                        <a class="dropdown-item" href="javascript:void(0)" id="menuJadwalKerja">Jadwal Karyawan</a>
+                        <a class="dropdown-item" href="/jadwalkaryawan" id="menuJadwalKerja">Jadwal Karyawan</a>
                     </div>
 
                     <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

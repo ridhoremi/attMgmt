@@ -20,6 +20,7 @@ function form_shift() {
   method = "insert";
   $("#modalShift").modal("show");
   $("#modal-shift").text("Tambah Data");
+  $("#modal_titel-shift").text("Tambah Data");
   $("#formShift")[0].reset();
   $(".form-control").removeClass("is-invalid");
   $(".help-block").text("");
@@ -73,11 +74,11 @@ function editDataShift(id) {
     type: "GET",
     dataType: "JSON",
     success: function (data) {
-    $('[name="id_shift"]').val(data.id);
-    $('[name=machine_id_shift').val(data.machine_id)
-    $('[name="nama_shift"]').val(data.nama_shift);
-    $('[name="jam_masuk"]').val(data.jam_masuk);
-    $('[name="jam_keluar"]').val(data.jam_keluar);
+    $('[name="id_shift"]').val(data.data.id);
+    $('[name="machine_id_shift"]').val(data.data.machine_id)
+    $('[name="nama_shift"]').val(data.data.nama_shift);
+    $('[name="jam_masuk"]').val(data.data.jam_masuk);
+    $('[name="jam_keluar"]').val(data.data.jam_keluar);
 
       // $("#id").prop("readonly", true);
       $("#modalShift").modal("show");
@@ -110,10 +111,19 @@ function hapusDataShift(id) {
         dataType: "json",
         success: function (res) {
           if (res.status) {
+            
+            Swal.fire({
+            title: "Berhasil!",
+            text: res.message, 
+            icon: "success"
+            });
             dtShift.ajax.reload();
-            Swal.fire("Berhasil!", "Data berhasil dihapus.", "success");
           } else {
-            Swal.fire("Gagal!", "Data gagal dihapus.", "error");
+           Swal.fire({
+             title: "Gagal!",
+            text: res.message, // 🔥 juga dari backend
+            icon: "error"
+            });
           }
         },
       });
