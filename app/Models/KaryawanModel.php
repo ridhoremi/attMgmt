@@ -132,6 +132,7 @@ class KaryawanModel extends Model
                 'error' => $this->errors()
             ];
         }
+
         return [
             'status' => true
         ];
@@ -139,7 +140,6 @@ class KaryawanModel extends Model
 
     public function hapus($id = null)
     {
-
         $result = $this->delete($id);
         if (!$result) {
             return [
@@ -147,9 +147,23 @@ class KaryawanModel extends Model
                 'message' => 'Gagal menghapus data'
             ];
         }
-
         return [
             'status' => true
         ];
     }
+
+    public function getKaryawan($machine_id) {
+    return $this->select('user_id,nama')
+        ->where('machine_id', $machine_id)
+        ->findAll();
+    }
+
+    public function getAllKaryawan()
+{
+    return $this->select('id,nama')
+        ->orderBy('nama', 'ASC')
+        ->findAll();
+}
+
+
 }

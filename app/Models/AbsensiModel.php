@@ -12,7 +12,7 @@ class AbsensiModel extends Model
 
 
 
-    public function getData($start, $length)
+    public function getData($start=null, $length=null)
     {
         return $this->db->table('checkinout c')
             ->select('c.id, c.checktime, c.machine_id, k.nama')

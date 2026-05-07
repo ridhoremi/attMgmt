@@ -35,38 +35,37 @@ function initDataAbsensi() {
       data: function (d) {
         d.start_date = $("#startDate").val();
         d.end_date = $("#endDate").val();
-      }
-    }
+      },
+    },
   });
 }
 
 function initPreviewTable() {
+  if ($.fn.DataTable.isDataTable("#dtPreview")) {
+    $("#dtPreview").DataTable().destroy();
+  }
 
-    if ($.fn.DataTable.isDataTable('#dtPreview')) {
-        $('#dtPreview').DataTable().destroy();
-    }
+  dtPreview = $("#dtPreview").DataTable({
+    data: [],
+    columns: [
+      { data: "no" },
+      { data: "user_id" },
+      { data: "nama" },
+      { data: "checktime" },
+      { data: "machine" },
+      { data: "status" },
+    ],
+  });
 
-    dtPreview = $('#dtPreview').DataTable({
-        data: [],
-        columns: [
-            { data: 'no' },
-            { data: 'user_id' },
-            { data: 'nama' },
-            { data: 'checktime' },
-            { data: 'machine' },
-            { data: 'status' }
-        ]
-    });
-
-    $('#btnSimpan').prop('disabled', true);
+  $("#btnSimpan").prop("disabled", true);
 }
 
 function reloadTable() {
-    dtAbsensi.ajax.reload();
+  dtAbsensi.ajax.reload();
 }
 
-function import_proses(){
-   $.ajax({
+function import_proses() {
+  $.ajax({
     url: BASE_URL + "/import-absensi",
     type: "POST",
     data: new FormData($("#formImport")[0]),
@@ -75,62 +74,58 @@ function import_proses(){
     contentType: false,
 
     success: function (data) {
-    dtPreview.clear(); 
-    let no = 1;
-     
-    data.forEach(function (row) {
-        dtPreview.row.add({
-            no: no++,
-            user_id: row.user_id,
-            nama: row.nama,
-            checktime: row.checktime,
-            machine: row.machine,
-            status: row.status
-        });
-       
-    });
+      dtPreview.clear();
+      let no = 1;
 
-    dtPreview.draw();
-    window.dataImport = data;
-     if (data.length > 0) {
-        $('#btnSimpan').prop('disabled', false);
-    }
+      data.forEach(function (row) {
+        dtPreview.row.add({
+          no: no++,
+          user_id: row.user_id,
+          nama: row.nama,
+          checktime: row.checktime,
+          machine: row.machine,
+          status: row.status,
+        });
+      });
+
+      dtPreview.draw();
+      window.dataImport = data;
+      if (data.length > 0) {
+        $("#btnSimpan").prop("disabled", false);
+      }
     },
 
     error: function (jqXHR) {
-        console.log("STATUS:", jqXHR.status);
-        console.log("RESPONSE:", jqXHR.responseText);
-    }
+      console.log("STATUS:", jqXHR.status);
+      console.log("RESPONSE:", jqXHR.responseText);
+    },
   });
 }
 
-function simpanData(){
- 
-    if (!window.dataImport || window.dataImport.length === 0) {
-        alert("Tidak ada data!");
-        return;
-    }
+function simpanData() {
+  if (!window.dataImport || window.dataImport.length === 0) {
+    alert("Tidak ada data!");
+    return;
+  }
 
-    $.ajax({
-        url: BASE_URL + "/simpan-absensi",
-        type: "POST",
-        data: {
-            data: JSON.stringify(window.dataImport),
-           
-        },
-        success: function(res){
-             Swal.fire("Berhasil!", "Data Impor Berhasil Disimpan.", "success");
+  $.ajax({
+    url: BASE_URL + "/simpan-absensi",
+    type: "POST",
+    data: {
+      data: JSON.stringify(window.dataImport),
+    },
+    success: function (res) {
+      Swal.fire("Berhasil!", "Data Impor Berhasil Disimpan.", "success");
 
-            dtAbsensi.ajax.reload();
-            dtPreview.clear().draw();
+      dtAbsensi.ajax.reload();
+      dtPreview.clear().draw();
 
-            window.dataImport = [];
+      window.dataImport = [];
 
-             $('#btnSimpan').prop('disabled', true);
-        },
-        error: function (jqXHR) {
-            console.log(jqXHR.responseText);
-        }
-    });
-
+      $("#btnSimpan").prop("disabled", true);
+    },
+    error: function (jqXHR) {
+      console.log(jqXHR.responseText);
+    },
+  });
 }

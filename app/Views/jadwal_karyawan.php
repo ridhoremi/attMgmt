@@ -1,59 +1,52 @@
-<div class="container mt-5">
+<div class="container-fluid py-4 px-4" style="margin-top:50px;">
     <div class="row">
         <div class="col">
-            <hr>
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-3">Jadwal Karyawan</h5>
                 </div>
-                <div class="card-body">
-
+                 <div class="card-body">
                 </div>
             </div>
+            <div class="card card-custom p-3 mb-3 mt-4">
+        <div class="table-responsive">
 
-            <div class="table-responsive">
-                <table class="table table-bordered text-center">
+        <table class="table table-bordered ">
 
-                    <!-- HEADER -->
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="nama-col">Nama</th>
+            <thead class="table-dark">
 
-                           <?php 
-                            $jumlahHari = date('t', strtotime("$tahun-$bulan-01"));
-                            for ($i = 1; $i <= $jumlahHari; $i++): ?>
-                                <th><?= $i ?></th>
-                                                <?php endfor; ?>
-                       </tr>
-                    </thead>
+            <tr>
 
-                    <!-- BODY -->
-                    <tbody>
-                        <?php foreach ($karyawan as $k): ?>
-                            <tr>
-                                <td class="nama-col text-start"><?= $k['nama'] ?></td>
+                <th class="nama-col" style="text-align:left;">Nama Karyawan</th>
 
-                                <?php for ($i = 1; $i <= $jumlahHari; $i++):
-                                    $shift = $map[$k['id']][$i] ?? '';
-                                    $class = '';
+                <?php
+                $jumlahHari = date('t', strtotime("$tahun-$bulan-01"));
 
-                                    if ($shift == 'Pagi') $class = 'bg-pagi';
-                                    elseif ($shift == 'Siang') $class = 'bg-siang';
-                                    elseif ($shift == 'Malam') $class = 'bg-malam';
-                                ?>
-                                    <td class="<?= $class ?>">
-                                        <?= $shift ? substr($shift, 0, 1) : '-' ?>
-                                    </td>
-                                <?php endfor; ?>
+                for ($i = 1; $i <= $jumlahHari; $i++): ?>
+                    <th class="text-center">
+                     <?= $i ?>
+                     </th>
+                <?php endfor; ?>
 
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
+            </tr>
 
-                </table>
+            </thead>
+
+            <?php foreach ($karyawan as $k): ?>
+                <tr>
+                    <td class="nama-col text-start">
+                    <?= $k['nama'] ?>
+                    </td>
+            <?php for ($i = 1; $i <= $jumlahHari; $i++): ?>
+                   <td class="text-center">-</td>
+            <?php endfor; ?>
+                </tr>
+            <?php endforeach; ?>
+            </table>
             </div>
         </div>
     </div>
+</div>
 
 
 

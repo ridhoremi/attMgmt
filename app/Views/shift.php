@@ -11,7 +11,7 @@
 
                     <div class="d-flex justify-content-between align-items-center">
 
-                        <a href="javascript:void(0)" class="btn btn-primary mt-3 mb-3" onclick="form_shift()"> Tambah Data </a>
+                          <a href="javascript:void(0)" class="btn btn-primary mt-3 mb-3" onclick="form_shift()"> Tambah Data </a>
 
                         <div style="width:200px;">
                             <select id="" class="form-control form-control-sm">
@@ -38,9 +38,7 @@
                     </div>
                 </div>
 
-
             </div>
-
             <div class="modal fade" id="modalShift" tabindex="-1">
                 <div class="modal-dialog">
                     <div class="modal-content">
