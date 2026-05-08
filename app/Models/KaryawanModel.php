@@ -152,18 +152,9 @@ class KaryawanModel extends Model
         ];
     }
 
-    public function getKaryawan($machine_id) {
-    return $this->select('user_id,nama')
-        ->where('machine_id', $machine_id)
-        ->findAll();
-    }
-
     public function getAllKaryawan()
-{
-    return $this->select('id,nama')
-        ->orderBy('nama', 'ASC')
-        ->findAll();
-}
-
-
+    {
+        return $this->orderBy('nama', 'ASC')
+            ->findAll();
+    }
 }

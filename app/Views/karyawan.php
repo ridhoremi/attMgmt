@@ -17,7 +17,7 @@
                                 <th scope="col">Aksi</th>
                             </tr>
                         </thead>
-                         <tbody>
+                        <tbody>
 
                         </tbody>
                     </table>

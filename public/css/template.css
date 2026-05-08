@@ -1,6 +1,17 @@
+.filter-control {
+    height: 40px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.filter-wrapper {
+    gap: 10px;
+}
+
 .table-responsive {
     padding-top: 10px;
 }
+
 #dtPreview {
     margin-top: 10px ;
 }
@@ -14,4 +25,19 @@
 #dtTabel tbody td:last-child {
     text-align: center 
 }
+#tblJadwal th,
+#tblJadwal td {
+    white-space: nowrap;
+    font-size: 13px;
+}
 
+.sticky-col {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    min-width: 220px;
+}
+
+thead .sticky-col {
+    z-index: 3;
+}

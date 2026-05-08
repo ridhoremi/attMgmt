@@ -14,7 +14,6 @@ class ShiftModel extends Model
 
     public function getData($start = null, $length = null)
     {
-
         $result = $this->db->table('shift s')
             ->select('s.id,s.nama_shift, m.nama_mesin, s.jam_masuk, s.jam_keluar')
             ->join('mesin m', 'm.machine_id = s.machine_id', 'inner')
@@ -22,20 +21,14 @@ class ShiftModel extends Model
             ->orderBy('s.id', 'DESC')
             ->get()
             ->getResultArray();
-
         return $result;
     }
-    public function getDataSearch($search, $start, $length)
+    public function getDataSearch($search = null, $start = null, $length = null)
     {
-
-
         // $result = $this->like('nama_shift', $search)->findAll($start, $length);
-
         $result = $this->db->table('shift s')
             ->select('s.id,s.nama_shift, nama_mesin m, s.jam_masuk, s.jam_keluar')
             ->join('mesin m', 'm.machine_id = c.machine_id', 'inner');
-
-
 
         if ($search) {
             $result->groupStart()
@@ -56,6 +49,11 @@ class ShiftModel extends Model
         return $this->db->table('shift s')
             ->join('mesin m', 's.machine_id = m.machine_id', 'inner')
             ->countAllResults();
+    }
+
+    public function getAllShift()
+    {
+        return $this->orderBy('id', 'ASC')->findAll();
     }
 
     public function getTotalSearch($search = null)

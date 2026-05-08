@@ -31,4 +31,8 @@ $routes->post('/updateshift', 'Shift::update');
 $routes->delete('/hapusshift/(:num)', 'Shift::hapus/$1');
 
 $routes->get('/jadwal', 'Jadwal::index');
-$routes->get('/jadwalkaryawan', 'Jadwal::grid');
+// $routes->get('/jadwalkaryawan', 'Jadwal::grid');
+
+$routes->post('/jadwalKaryawan', 'Jadwal::getTable');
+$routes->get('/getJadwal', 'Jadwal::getJadwal');
+$routes->post('/jadwal-simpan', 'Jadwal::simpan');
