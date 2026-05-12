@@ -3,74 +3,48 @@
 namespace App\Controllers;
 
 use App\Models\JadwalModel;
+use App\Models\KaryawanModel;
+use App\Models\ShiftModel;
 
 class Jadwal extends BaseController
 {
-
-    protected $model;
+    protected JadwalModel $modelJadwal;
+    protected KaryawanModel $modelKaryawan;
+    protected ShiftModel $modelShift;
 
     public function __construct()
     {
-
-        $this->model = new JadwalModel();
+        $this->modelJadwal = new JadwalModel();
+        $this->modelKaryawan = new KaryawanModel();
+        $this->modelShift = new ShiftModel();
     }
 
     public function index()
     {
-        if ($this->request->isAJAX()) {
-            $karyawanModel = new \App\Models\KaryawanModel();
-            $jadwalModel   = new \App\Models\JadwalModel();
-            $shiftModel    = new \App\Models\ShiftModel();
 
-            $tahun = date('Y');
-            $bulan = date('m');
-            $data = [
-                'tahun'    => $tahun,
-                'bulan'    => $bulan,
-                'karyawan' => $karyawanModel->getAllKaryawan(),
-                'shift'    => $shiftModel->getAllShift(),
-                'map'      => $jadwalModel->getMapJadwal($bulan, $tahun)
-            ];
-            return view('jadwal_karyawan', $data);
-        }
+
+        $data = [
+            'title'    => 'Jadwal Shift/Kerja Karyawan',
+            'content'  => 'jadwal_karyawan'
+        ];
+
+        return view('layout/template', $data);
     }
 
-    public function getTable()
-    {
-        if ($this->request->isAJAX()) {
 
-            $bulan = $this->request->getPost('bulan');
-            $tahun = $this->request->getPost('tahun');
-
-            $karyawanModel = new \App\Models\KaryawanModel();
-            $jadwalModel   = new \App\Models\JadwalModel();
-
-            $data = [
-                'bulan'    => $bulan,
-                'tahun'    => $tahun,
-                'karyawan' => $karyawanModel->getAllKaryawan(),
-                'map'      => $jadwalModel->getMapJadwal($bulan, $tahun)
-            ];
-
-            return view('table_jadwal_karyawan', $data);
-        }
-    }
 
     public function getJadwal()
     {
         $bulan = $this->request->getGet('bulan');
         $tahun = $this->request->getGet('tahun');
 
-        $karyawanModel = new \App\Models\KaryawanModel();
-        $jadwalModel   = new \App\Models\JadwalModel();
 
         $jumlahHari = date('t', strtotime("$tahun-$bulan-01"));
-
         // Karyawan
-        $karyawan = $karyawanModel->getAllKaryawan();
+        $karyawan = $this->modelKaryawan->getAllKaryawan();
 
         // Jadwal
-        $map = $jadwalModel->getMapJadwal($bulan, $tahun);
+        $map = $this->modelJadwal->getMapJadwal($bulan, $tahun);
 
         return $this->response->setJSON([
 
@@ -81,14 +55,29 @@ class Jadwal extends BaseController
         ]);
     }
 
+    public function cmbKaryawan()
+    {
+        $karyawan = $this->modelKaryawan->getAllKaryawan();
+        return $this->response->setJSON([
+            'karyawan'   => $karyawan
+        ]);
+    }
+
+    public function cmbShift()
+    {
+        $shift = $this->modelShift->getAllShift();
+        return $this->response->setJSON([
+            'shift' => $shift
+        ]);
+    }
+
 
     public function simpan()
     {
         $jadwalModel = new \App\Models\JadwalModel();
 
-        $karyawan = $this->request->getPost('karyawan');
-
-        list($user_id, $machine_id) = explode('|', $karyawan);
+        $user_id    = $this->request->getPost('user_id');
+        $machine_id = $this->request->getPost('machine_id');
 
         $shift_id        = $this->request->getPost('shift_id');
         $tanggal_mulai   = $this->request->getPost('tanggal_mulai');
@@ -132,19 +121,13 @@ class Jadwal extends BaseController
         // =========================
 
         for ($i = $start; $i <= $end; $i += 86400) {
-
             $tanggal = date('Y-m-d', $i);
-
-            // Cek data existing
             $cek = $jadwalModel
-
                 ->where('user_id', $user_id)
                 ->where('machine_id', $machine_id)
                 ->where('tanggal', $tanggal)
-
                 ->first();
 
-            // Kalau sudah ada
             if ($cek) {
 
                 $duplikat[] = $tanggal;
@@ -154,13 +137,11 @@ class Jadwal extends BaseController
 
             // Insert
             $jadwalModel->insert([
-
                 'user_id'    => $user_id,
                 'machine_id' => $machine_id,
                 'tanggal'    => $tanggal,
                 'shift_id'   => $shift_id,
                 'keterangan' => $keterangan
-
             ]);
 
             $berhasil++;
@@ -198,6 +179,47 @@ class Jadwal extends BaseController
 
             'message' => 'Jadwal berhasil disimpan'
 
+        ]);
+    }
+
+
+    public function hapus()
+    {
+        $user_id    = $this->request->getPost('user_id');
+        $machine_id = $this->request->getPost('machine_id');
+        $tanggal_mulai = $this->request->getPost('tanggal_mulai');
+        $tanggal_selesai = $this->request->getPost('tanggal_selesai');
+
+        if (
+            empty($user_id) ||
+            empty($machine_id) ||
+            empty($tanggal_mulai) ||
+            empty($tanggal_selesai)
+        ) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Data belum lengkap'
+            ]);
+        }
+
+        if ($tanggal_mulai > $tanggal_selesai) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Tanggal mulai tidak boleh lebih besar dari tanggal selesai'
+            ]);
+        }
+
+        $hapus = $this->modelJadwal->hapusJadwal($user_id, $machine_id, $tanggal_mulai, $tanggal_selesai);
+
+        if ($hapus) {
+            return $this->response->setJSON([
+                'status' => true,
+                'message' => 'Jadwal berhasil dihapus'
+            ]);
+        }
+        return $this->response->setJSON([
+            'status' => false,
+            'message' => 'Gagal menghapus jadwal'
         ]);
     }
 }

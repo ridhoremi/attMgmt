@@ -45,7 +45,8 @@
     <script src="<?= base_url('js/template.js'); ?>"></script>
     <script src="<?= base_url('js/karyawan.js'); ?>"></script>
     <script src="<?= base_url('js/absensi.js'); ?>"></script>
-    <script src="<?= base_url('js/Shift.js'); ?>"></script>
+    <script src="<?= base_url('js/shift.js'); ?>"></script>
+    <script src="<?= base_url('js/jadwal.js'); ?>"></script>
 
 
 

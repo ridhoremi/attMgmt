@@ -2,23 +2,12 @@ var dtAbsensi;
 var dtPreview;
 
 var method;
-// $(document).ready(function () {
-//   dtAbsensi= $("#dtTabel").DataTable({
-//     //processing: true,
-//     serverSide: true,
-//     pageLength: 10,
-//     deferRender: true,
-//     ajax: {
-//       url: BASE_URL + "/listabsensi",
-//         type: "POST",
-//         data: function (d) {
-//             d.startDate = $('#startDate').val();
-//             d.endDate   = $('#endDate').val();
-//         }
-//     }
-//   });
 
-// });
+$(document).ready(function () {
+  if ($("#dtTabel").length) {
+    initDataAbsensi();
+  }
+});
 
 function initDataAbsensi() {
   if ($.fn.DataTable.isDataTable("#dtTabel")) {

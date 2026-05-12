@@ -1,4 +1,10 @@
 var dtShift;
+$(document).ready(function () {
+  if ($("#dtShift").length) {
+    initDataShift();
+  }
+});
+
 function initDataShift() {
   if ($.fn.DataTable.isDataTable("#dtShift")) {
     $("#dtShift").DataTable().destroy();
@@ -11,7 +17,7 @@ function initDataShift() {
     deferRender: true,
     ajax: {
       url: BASE_URL + "/listshift",
-      type: "GET"
+      type: "GET",
     },
   });
 }
@@ -28,12 +34,11 @@ function form_shift() {
 
 function simpanShift() {
   let url;
-       
+
   $(".form-control").removeClass("is-invalid");
   $(".help-block").text("");
   if (method == "insert") {
     url = BASE_URL + "/simpanShift";
-    
   } else {
     url = BASE_URL + "/updateshift";
   }
@@ -48,7 +53,7 @@ function simpanShift() {
       if (data.status) {
         $("#formShift")[0].reset();
         $("#modalShift").modal("hide");
-        
+
         dtShift.ajax.reload(null, false);
       } else {
         for (var i = 0; i < data.inputerror.length; i++) {
@@ -74,11 +79,11 @@ function editDataShift(id) {
     type: "GET",
     dataType: "JSON",
     success: function (data) {
-    $('[name="id_shift"]').val(data.data.id);
-    $('[name="machine_id_shift"]').val(data.data.machine_id)
-    $('[name="nama_shift"]').val(data.data.nama_shift);
-    $('[name="jam_masuk"]').val(data.data.jam_masuk);
-    $('[name="jam_keluar"]').val(data.data.jam_keluar);
+      $('[name="id_shift"]').val(data.data.id);
+      $('[name="machine_id_shift"]').val(data.data.machine_id);
+      $('[name="nama_shift"]').val(data.data.nama_shift);
+      $('[name="jam_masuk"]').val(data.data.jam_masuk);
+      $('[name="jam_keluar"]').val(data.data.jam_keluar);
 
       // $("#id").prop("readonly", true);
       $("#modalShift").modal("show");
@@ -111,18 +116,17 @@ function hapusDataShift(id) {
         dataType: "json",
         success: function (res) {
           if (res.status) {
-            
             Swal.fire({
-            title: "Berhasil!",
-            text: res.message, 
-            icon: "success"
+              title: "Berhasil!",
+              text: res.message,
+              icon: "success",
             });
             dtShift.ajax.reload();
           } else {
-           Swal.fire({
-             title: "Gagal!",
-            text: res.message, // 🔥 juga dari backend
-            icon: "error"
+            Swal.fire({
+              title: "Gagal!",
+              text: res.message, // 🔥 juga dari backend
+              icon: "error",
             });
           }
         },

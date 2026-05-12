@@ -33,24 +33,13 @@
                 <!-- Karyawan -->
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle"
-                        href="#"
-                        id="navbarDropdownKaryawan"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownKaryawan" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Karyawan
-
                     </a>
 
-                    <div class="dropdown-menu"
-                        aria-labelledby="navbarDropdownKaryawan">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownKaryawan">
 
-                        <a class="dropdown-item"
-                            href="javascript:void(0)"
-                            id="menuKaryawan">
+                        <a class="dropdown-item" href="/karyawan" id="menuKaryawan">
 
                             Data Karyawan
 
@@ -78,17 +67,13 @@
                     <div class="dropdown-menu"
                         aria-labelledby="navbarDropdownShift">
 
-                        <a class="dropdown-item"
-                            href="javascript:void(0)"
-                            id="menuJamkerja">
+                        <a class="dropdown-item" href="/settingJamkerja" id="menuJamkerja">
 
-                            Data Shift
+                            Setting Jam Kerja
 
                         </a>
 
-                        <a class="dropdown-item"
-                            href="/jadwalkaryawan"
-                            id="menuJadwalKerja">
+                        <a class="dropdown-item " href="/jadwal" id="menuJadwalKerja">
 
                             Jadwal Karyawan
 
@@ -113,16 +98,13 @@
 
                     </a>
 
-                    <div class="dropdown-menu"
-                        aria-labelledby="navbarDropdownAbsensi">
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownAbsensi">
 
-                        <a class="dropdown-item" href="javascript:void(0)" id="menuAbsensi">
+                        <a class="dropdown-item" href="/absensi">
                             Data Absensi
                         </a>
 
-                        <a class="dropdown-item"
-                            href="javascript:void(0)"
-                            id="menuAttMgmt">
+                        <a class="dropdown-item" href="/importabsensi">
 
                             Import Absensi
 

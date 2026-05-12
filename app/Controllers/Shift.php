@@ -15,16 +15,11 @@ class Shift extends BaseController
 
     public function index()
     {
-        // $data = [
-        //     'title' => 'Home',
-        //     'content' => 'shift'
-
-
-        // ];
-        // return view('layout/template', $data);
-        if ($this->request->isAJAX()) {
-            return view('shift');
-        }
+        $data = [
+            'title' => 'Setting Jam Kerja/Shift',
+            'content' => 'shift'
+        ];
+        return view('layout/template', $data);
     }
 
     public function list()

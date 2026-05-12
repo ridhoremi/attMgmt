@@ -15,17 +15,15 @@ class Karyawan extends BaseController
 
     public function index()
     {
+        $data = [
+            'title' => 'Data Karyawan',
+            'content' => 'karyawan'
+        ];
+        return view('layout/template', $data);
 
-        // $data = [
-        //     'title' => 'Data Karyawan',
-        //     'content' => 'karyawan'
-
-        // ];
-        // return view('layout/template', $data);
-
-        if ($this->request->isAJAX()) {
-            return view('karyawan');
-        }
+        // if ($this->request->isAJAX()) {
+        //     return view('karyawan');
+        // }
     }
 
 

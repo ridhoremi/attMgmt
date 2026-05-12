@@ -15,23 +15,13 @@ class JadwalModel extends Model
         'tanggal'
     ];
 
-    // public function getGrid($machine_id = null, $bulan = null, $tahun = null)
-    // {
-    //     return $this->select('jadwal_karyawan.*, shift.nama_shift')
-    //         ->join('shift', 'shift.id = jadwal_karyawan.shift_id')
-    //         ->where('jadwal_karyawan.machine_id', $machine_id)
-    //         ->where('MONTH(tanggal)', $bulan)
-    //         ->where('YEAR(tanggal)', $tahun)
-    //         ->findAll();
-    // }
-
 
     public function getMapJadwal($bulan = null, $tahun = null)
     {
-        $db = \Config\Database::connect();
 
-        $jadwal = $db->table('jadwal_karyawan jk')
-            ->select('jk.user_id, jk.tanggal, s.nama_shift')
+
+        $jadwal = $this->db->table('jadwal_karyawan jk')
+            ->select('jk.user_id, jk.machine_id, jk.tanggal, s.nama_shift')
             ->join('shift s', 's.id = jk.shift_id')
             ->where('MONTH(jk.tanggal)', $bulan)
             ->where('YEAR(jk.tanggal)', $tahun)
@@ -48,5 +38,16 @@ class JadwalModel extends Model
         }
 
         return $map;
+    }
+
+    public function hapusJadwal($user_id = null, $machine_id = null, $tanggal_mulai = null, $tanggal_selesai = null)
+    {
+        $result = $this->where('user_id', $user_id)
+            ->where('machine_id', $machine_id)
+            ->where('tanggal >=', $tanggal_mulai)
+            ->where('tanggal <=', $tanggal_selesai)
+            ->delete();
+
+        return $result;
     }
 }

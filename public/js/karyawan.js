@@ -1,17 +1,11 @@
 var table;
 var method;
-// $(document).ready(function () {
-//   table = $("#tabel1").DataTable({
-//    // processing: true,
-//     serverSide: true,
-//     pageLength: 10,
-//     deferRender: true,
-//     ajax: {
-//       url: BASE_URL + "/listkaryawan",
-//       type: "GET",
-//     },
-//   });
-// });
+
+$(document).ready(function () {
+  if ($("#tabel1").length) {
+    initKaryawan();
+  }
+});
 
 function initKaryawan() {
   if ($.fn.DataTable.isDataTable("#tabel1")) {
@@ -58,7 +52,6 @@ function simpan() {
       if (data.status) {
         $("#form")[0].reset();
         $("#modal-form").modal("hide");
-        
         table.ajax.reload(null, false);
       } else {
         for (var i = 0; i < data.inputerror.length; i++) {
@@ -85,7 +78,7 @@ function editData(id) {
     dataType: "JSON",
     success: function (data) {
       $('[name="id"]').val(data.id);
-      $('[name=machine_id').val(data.machine_id)
+      $("[name=machine_id").val(data.machine_id);
       $('[name="user_id"]').val(data.user_id);
       $('[name="nama"]').val(data.nama);
       $('[name="alamat"]').val(data.alamat);

@@ -17,10 +17,11 @@ class Importabsensi extends BaseController
 
     public function index()
     {
-
-        if ($this->request->isAJAX()) {
-            return view('importabsensi');
-        }
+        $data = [
+            'title' => 'Import Absensi',
+            'content' => 'importabsensi'
+        ];
+        return view('layout/template', $data);
     }
 
     public function import_file()
@@ -29,16 +30,18 @@ class Importabsensi extends BaseController
         $machine_id = $this->request->getPost('machine_id');
         $karyawanModel = new \App\Models\KaryawanModel();
 
-        if (!$machine_id){
-        return $this->response->setJSON([
-        'status' => false,
-        'message' => 'Machine ID wajib dipilih' ]);
+        if (!$machine_id) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Machine ID wajib dipilih'
+            ]);
         }
 
         if (!$file || !$file->isValid()) {
             return $this->response->setJSON([
-        'status' => false,
-        'message' => 'File Tidak Valid' ]);
+                'status' => false,
+                'message' => 'File Tidak Valid'
+            ]);
         }
 
         $path = $file->getTempName();
@@ -52,10 +55,8 @@ class Importabsensi extends BaseController
         }
 
         foreach ($lines as $line) {
-
             $line = trim($line);
             if ($line == '') continue;
-
             $data = preg_split('/\s+/', $line);
             $user_id = $data[0] ?? '';
             $date    = $data[1] ?? '';
@@ -63,7 +64,7 @@ class Importabsensi extends BaseController
             $machine = $machine_id;
             $status = $data[4] ?? ' ';
             $checktime = $date . ' ' . $time;
-           
+
             $nama = $karyawanMap[$user_id] ?? 'TIDAK DITEMUKAN';
             $result[] = [
                 'no'        => $no,
@@ -73,16 +74,13 @@ class Importabsensi extends BaseController
                 'machine'   => $machine,
                 'status'    => $status
             ];
-
             $no++;
         }
         return $this->response->setJSON($result);
     }
 
-    
     public function simpan_absensi()
     {
-        
         $data = json_decode($this->request->getPost('data'), true);
         foreach ($data as $row) {
             $cek = $this->checkinModel
