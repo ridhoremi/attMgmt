@@ -59,10 +59,8 @@ function loadJadwal() {
 
       $("#theadJadwal").html(thead);
 
-      // =========================
+     
       // BODY
-      // =========================
-
       let html = "";
 
       $.each(res.karyawan, function (index, k) {
@@ -166,6 +164,7 @@ function tampil_formTambahJadwal() {
 // }
 
 function simpanJadwal() {
+  let btn = $("#btnTambahJadwal");
   let user_id = $("#karyawan").val();
   let machine_id = $("#karyawan option:selected").data("machine");
   console.log({
@@ -189,6 +188,13 @@ function simpanJadwal() {
       keterangan: $("#keterangan").val(),
     },
     dataType: "json",
+    beforeSend: function () {
+      btn.prop("disabled", true);
+      btn.html(`
+                <span class="spinner-border spinner-border-sm"></span>
+                Sedang Menyimpan...
+            `);
+    },
     success: function (res) {
       console.log(res);
       if (res.status) {
@@ -218,6 +224,11 @@ function simpanJadwal() {
         title: "Error",
         text: "Terjadi kesalahan",
       });
+    },
+
+    complete: function () {
+      btn.prop("disabled", false);
+      btn.html("Simpan Jadwal");
     },
   });
 }

@@ -7,6 +7,10 @@ $(document).ready(function () {
   if ($("#dtTabel").length) {
     initDataAbsensi();
   }
+
+   if ($("#dtPreview").length) {
+    initPreviewTable(); 
+  }
 });
 
 function initDataAbsensi() {
@@ -63,6 +67,18 @@ function import_proses() {
     contentType: false,
 
     success: function (data) {
+
+      if (data.status === false) {
+        Swal.fire({
+          icon: "error",
+          title: "Import Gagal",
+          text: data.message || "Terjadi kesalahan saat import",
+        });
+        return;
+      }
+
+      // console.log("IS ARRAY?", Array.isArray(data));
+      // console.log("DATA:", data);
       dtPreview.clear();
       let no = 1;
 
@@ -106,7 +122,7 @@ function simpanData() {
     success: function (res) {
       Swal.fire("Berhasil!", "Data Impor Berhasil Disimpan.", "success");
 
-      dtAbsensi.ajax.reload();
+      // dtAbsensi.ajax.reload();
       dtPreview.clear().draw();
 
       window.dataImport = [];

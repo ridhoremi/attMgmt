@@ -6,8 +6,7 @@ use App\Models\CheckinoutModel;
 
 class Importabsensi extends BaseController
 {
-
-    protected $checkinModel;
+    protected CheckinoutModel $checkinModel;
 
     public function __construct()
     {
@@ -46,13 +45,17 @@ class Importabsensi extends BaseController
 
         $path = $file->getTempName();
         $content = file_get_contents($path);
-        $lines = preg_split('/\r\n|\r|\n/', $content);
+        // $lines = preg_split('/\r\n|\r|\n/', $content);
+        $lines = array_filter(array_map('trim', explode("\n", $content)));
         $result = [];
         $no = 1;
-        $karyawanRows = $karyawanModel->getKaryawan($machine_id);
+        $karyawanMap = [];
+        $karyawanRows = $karyawanModel->getMesinKaryawan($machine_id);
+
         foreach ($karyawanRows as $row) {
             $karyawanMap[$row['user_id']] = $row['nama'];
         }
+
 
         foreach ($lines as $line) {
             $line = trim($line);
@@ -82,24 +85,35 @@ class Importabsensi extends BaseController
     public function simpan_absensi()
     {
         $data = json_decode($this->request->getPost('data'), true);
-        foreach ($data as $row) {
-            $cek = $this->checkinModel
-                ->where('user_id', $row['user_id'])
-                ->where('checktime', $row['checktime'])
-                ->first();
 
-            if ($cek) continue;
-
-            $this->checkinModel->insert([
-                'user_id'   => $row['user_id'],
-                'checktime' => $row['checktime'],
-                'machine_id'   => $row['machine'],
-                'status'    => $row['status']
-            ]);
-        }
+        $this->checkinModel->insertBatchAbsensi($data);
 
         return $this->response->setJSON([
             'status' => true
         ]);
     }
+
+    // public function simpan_absensi()
+    // {
+    //     $data = json_decode($this->request->getPost('data'), true);
+    //     foreach ($data as $row) {
+    //         $cek = $this->checkinModel
+    //             ->where('user_id', $row['user_id'])
+    //             ->where('checktime', $row['checktime'])
+    //             ->first();
+
+    //         if ($cek) continue;
+
+    //         $this->checkinModel->insert([
+    //             'user_id'   => $row['user_id'],
+    //             'checktime' => $row['checktime'],
+    //             'machine_id'   => $row['machine'],
+    //             'status'    => $row['status']
+    //         ]);
+    //     }
+
+    //     return $this->response->setJSON([
+    //         'status' => true
+    //     ]);
+    // }
 }

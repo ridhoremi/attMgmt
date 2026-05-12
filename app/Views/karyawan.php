@@ -1,13 +1,15 @@
-<div class="container mt-5">
+<div class="container pt-4 mt-5">
     <div class="row">
         <div class="col">
-            <hr>
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Data Karyawan</h5>
-                </div>
-                <div class="card-body">
+            <h2 class="text-center mb-0">
+                DATA KARYAWAN
+            </h2>
+
+            <div class="card card-custom p-3 mb-1 mt-2">
+                <div class="d-flex flex-wrap align-items-center filter-wrapper">
                     <a href="javascript:void(0)" class="btn btn-primary mt-3 mb-3" onclick="tampil_form()"> Tambah Data </a>
+                </div>
+                <div class="table-responsive mt-2">
                     <table id="tabel1" class="table table-striped">
                         <thead>
                             <tr>
@@ -22,7 +24,9 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
+
         </div>
     </div>
 </div>

@@ -152,7 +152,7 @@
                         Batal
                     </button>
 
-                    <button type="button" class="btn btn-success" onclick="simpanJadwal()">
+                    <button type="button" class="btn btn-success" id="btnTambahJadwal" onclick="simpanJadwal()">
                         <i class="bi bi-save me-1"></i>
                         Simpan Jadwal
                     </button>

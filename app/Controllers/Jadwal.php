@@ -222,4 +222,41 @@ class Jadwal extends BaseController
             'message' => 'Gagal menghapus jadwal'
         ]);
     }
+
+    public function simpanJadwal()
+    {
+        $jadwalModel = new \App\Models\JadwalModel();
+
+        $user_id    = $this->request->getPost('user_id');
+        $machine_id = $this->request->getPost('machine_id');
+        $shift_id   = $this->request->getPost('shift_id');
+        $mulai      = $this->request->getPost('tanggal_mulai');
+        $selesai    = $this->request->getPost('tanggal_selesai');
+        $ket        = $this->request->getPost('keterangan');
+
+        if (!$user_id || !$machine_id || !$shift_id || !$mulai || !$selesai) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Data belum lengkap'
+            ]);
+        }
+
+        if ($mulai > $selesai) {
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Tanggal mulai tidak boleh lebih besar dari tanggal selesai'
+            ]);
+        }
+
+        $result = $jadwalModel->generateJadwal(
+            $user_id,
+            $machine_id,
+            $shift_id,
+            $mulai,
+            $selesai,
+            $ket
+        );
+
+        return $this->response->setJSON($result);
+    }
 }

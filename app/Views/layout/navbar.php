@@ -2,7 +2,7 @@
 
     <div class="container-fluid">
 
-        <a class="navbar-brand" href="javascript:void(0)">
+        <a class="navbar-brand">
             Att Management
         </a>
 

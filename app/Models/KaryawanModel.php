@@ -157,4 +157,11 @@ class KaryawanModel extends Model
         return $this->orderBy('nama', 'ASC')
             ->findAll();
     }
+
+    public function getMesinKaryawan($machine_id = null)
+    {
+        return $this->where('machine_id', $machine_id)
+            ->orderBy('nama', 'ASC')
+            ->findAll();
+    }
 }

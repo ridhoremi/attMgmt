@@ -9,13 +9,17 @@
 }
 
 .table-responsive {
-    padding-top: 10px;
+    padding-top: 15px;
 }
 
 #dtPreview {
     margin-top: 10px ;
 }
 #dtShift {
+    margin-top: 10px ;
+}
+
+#tabel1{
     margin-top: 10px ;
 }
 
@@ -44,3 +48,20 @@
 thead .sticky-col {
     z-index: 3;
 }
+
+.dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: 0.2s ease;
+    pointer-events: none;
+}
+
+.nav-item.dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+

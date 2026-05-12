@@ -50,4 +50,75 @@ class JadwalModel extends Model
 
         return $result;
     }
+
+
+    public function generateJadwal($user_id = null, $machine_id = null, $shift_id = null, $mulai = null, $selesai = null, $keterangan = null)
+    {
+        $start = strtotime($mulai);
+        $end   = strtotime($selesai);
+
+        // 1. Generate semua tanggal dulu
+        $allDates = [];
+
+        for ($i = $start; $i <= $end; $i += 86400) {
+            $allDates[] = date('Y-m-d', $i);
+        }
+
+        // 2. Ambil data yang sudah ada SEKALI QUERY
+        $existing = $this->where([
+            'user_id'    => $user_id,
+            'machine_id' => $machine_id
+        ])->whereIn('tanggal', $allDates)
+            ->findAll();
+
+        // ubah jadi array lookup cepat
+        $existingDates = array_column($existing, 'tanggal');
+
+        $dataInsert = [];
+        $duplikat   = [];
+
+        // 3. Filter di PHP (tanpa query lagi)
+        foreach ($allDates as $tanggal) {
+
+            if (in_array($tanggal, $existingDates)) {
+                $duplikat[] = $tanggal;
+                continue;
+            }
+
+            $dataInsert[] = [
+                'user_id'    => $user_id,
+                'machine_id' => $machine_id,
+                'tanggal'    => $tanggal,
+                'shift_id'   => $shift_id,
+                'keterangan' => $keterangan
+            ];
+        }
+
+        // 4. INSERT SEKALI (BATCH)
+        if (!empty($dataInsert)) {
+            $this->insertBatch($dataInsert);
+        }
+
+        $berhasil = count($dataInsert);
+
+        // 5. RESPONSE
+        if ($berhasil == 0) {
+            return [
+                'status'  => false,
+                'message' => 'Semua jadwal sudah ada'
+            ];
+        }
+
+        if (count($duplikat) > 0) {
+            return [
+                'status'  => true,
+                'message' => $berhasil . ' jadwal berhasil disimpan, sebagian sudah ada'
+            ];
+        }
+
+        return [
+            'status'  => true,
+            'message' => 'Jadwal berhasil disimpan'
+        ];
+    }
 }
