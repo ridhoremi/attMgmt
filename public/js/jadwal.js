@@ -47,13 +47,29 @@ function loadJadwal() {
                 </th>
             `;
 
-      for (let i = 1; i <= res.jumlahHari; i++) {
-        thead += `
-                    <th class="text-center">
-                        ${i}
-                    </th>
-                `;
-      }
+     const namaHari = [
+  "Minggu",
+  "Senin",
+  "Selasa",
+  "Rabu",
+  "Kamis",
+  "Jumat",
+  "Sabtu"
+];
+
+for (let i = 1; i <= res.jumlahHari; i++) {
+ const tanggal = new Date(`${tahun}-${String(bulan).padStart(2,'0')}-${String(i).padStart(2,'0')}T00:00:00`);
+
+  const hari = namaHari[tanggal.getDay()];
+  const tgl = String(i).padStart(2, '0');
+
+  thead += `
+    <th class="text-center">
+      ${tgl}<br>
+      <small>${hari}</small>
+    </th>
+  `;
+}
 
       thead += "</tr>";
 
