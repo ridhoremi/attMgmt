@@ -9,13 +9,13 @@ class ShiftModel extends Model
 
     protected $table = 'shift';
     protected $useTimestamps = false;
-    protected $allowedFields = ['id', 'nama_shift', 'jam_masuk', 'jam_keluar', 'machine_id'];
+    protected $allowedFields = ['id', 'nama_shift', 'jam_masuk', 'jam_keluar', 'mulaiCheckin', 'akhirCheckin', 'mulaiCheckout', 'akhirCheckout', 'machine_id'];
 
 
     public function getData($start = null, $length = null)
     {
         $result = $this->db->table('shift s')
-            ->select('s.id,s.nama_shift, m.nama_mesin, s.jam_masuk, s.jam_keluar')
+            ->select('s.id,s.nama_shift, m.nama_mesin, s.jam_masuk, s.jam_keluar, s.mulaiCheckin, s.akhirCheckin, s.mulaiCheckout, s.akhirCheckout')
             ->join('mesin m', 'm.machine_id = s.machine_id', 'inner')
             ->limit($length, $start)
             ->orderBy('s.id', 'DESC')
@@ -27,7 +27,7 @@ class ShiftModel extends Model
     {
         // $result = $this->like('nama_shift', $search)->findAll($start, $length);
         $result = $this->db->table('shift s')
-            ->select('s.id,s.nama_shift, nama_mesin m, s.jam_masuk, s.jam_keluar')
+            ->select('s.id,s.nama_shift, m.nama_mesin, s.jam_masuk, s.jam_keluar, s.mulaiCheckin, s.akhirCheckin, s.mulaiCheckout, s.akhirCheckout')
             ->join('mesin m', 'm.machine_id = c.machine_id', 'inner');
 
         if ($search) {
@@ -95,6 +95,30 @@ class ShiftModel extends Model
                 'rules' => 'required',
                 'errors' => [
                     'required' => 'Jam Keluar diisi.'
+                ]
+            ],
+            'mulai_checkin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Mulai Checkin diisi.'
+                ]
+            ],
+            'akhir_checkin' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'akhir Checkin diisi.'
+                ]
+            ],
+            'mulai_checkout' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Mulai Checkout diisi.'
+                ]
+            ],
+            'akhir_checkout' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Akhir Checkout diisi.'
                 ]
             ],
             'machine_id_shift' => [

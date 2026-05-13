@@ -17,6 +17,7 @@
 }
 #dtShift {
     margin-top: 10px ;
+    margin-bottom: 10px;
 }
 
 #tabel1{
@@ -64,4 +65,13 @@ thead .sticky-col {
     transform: translateY(0);
     pointer-events: auto;
 }
+
+#tabelKehadiran.table td,
+#tabelKehadiran.table th {
+
+padding: 0.5rem;
+    font-size: 13px;
+}
+
+
 

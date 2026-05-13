@@ -7,7 +7,7 @@ use App\Models\AbsensiModel;
 class Absensi extends BaseController
 {
 
-    protected $model;
+    protected AbsensiModel $model;
 
     public function __construct()
     {

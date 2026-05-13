@@ -86,16 +86,8 @@
                 <!-- Absensi -->
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link dropdown-toggle"
-                        href="#"
-                        id="navbarDropdownAbsensi"
-                        role="button"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAbsensi" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Absensi
-
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownAbsensi">
@@ -105,9 +97,11 @@
                         </a>
 
                         <a class="dropdown-item" href="/importabsensi">
-
                             Import Absensi
+                        </a>
 
+                        <a class="dropdown-item" href="/rekap-absensi">
+                            Rekap Absensi
                         </a>
 
                     </div>

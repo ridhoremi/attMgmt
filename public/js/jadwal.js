@@ -47,35 +47,36 @@ function loadJadwal() {
                 </th>
             `;
 
-     const namaHari = [
-  "Minggu",
-  "Senin",
-  "Selasa",
-  "Rabu",
-  "Kamis",
-  "Jumat",
-  "Sabtu"
-];
+      const namaHari = [
+        "Minggu",
+        "Senin",
+        "Selasa",
+        "Rabu",
+        "Kamis",
+        "Jumat",
+        "Sabtu",
+      ];
 
-for (let i = 1; i <= res.jumlahHari; i++) {
- const tanggal = new Date(`${tahun}-${String(bulan).padStart(2,'0')}-${String(i).padStart(2,'0')}T00:00:00`);
+      for (let i = 1; i <= res.jumlahHari; i++) {
+        const tanggal = new Date(
+          `${tahun}-${String(bulan).padStart(2, "0")}-${String(i).padStart(2, "0")}T00:00:00`,
+        );
 
-  const hari = namaHari[tanggal.getDay()];
-  const tgl = String(i).padStart(2, '0');
+        const hari = namaHari[tanggal.getDay()];
+        const tgl = String(i).padStart(2, "0");
 
-  thead += `
-    <th class="text-center">
-      ${tgl}<br>
-      <small>${hari}</small>
-    </th>
-  `;
-}
+        thead += `
+        <th class="text-center">
+        ${tgl}<br>
+        <small>${hari}</small>
+        </th>
+        `;
+      }
 
       thead += "</tr>";
 
       $("#theadJadwal").html(thead);
 
-     
       // BODY
       let html = "";
 
@@ -273,6 +274,7 @@ function loadKaryawan() {
       });
       $("#karyawan").html(html);
       $("#hapus_karyawan").html(html);
+      $("#karyawan_rekap_absensi").html(html);
     },
   });
 }
@@ -402,6 +404,7 @@ function loadBulan() {
   });
 
   $("#bulan").html(html);
+  $("#bulan_rekap").html(html);
 }
 
 function loadTahun() {
@@ -420,4 +423,5 @@ function loadTahun() {
   }
 
   $("#tahun").html(html);
+  $("#tahun_rekap").html(html);
 }

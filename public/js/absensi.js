@@ -8,8 +8,8 @@ $(document).ready(function () {
     initDataAbsensi();
   }
 
-   if ($("#dtPreview").length) {
-    initPreviewTable(); 
+  if ($("#dtPreview").length) {
+    initPreviewTable();
   }
 });
 
@@ -67,7 +67,6 @@ function import_proses() {
     contentType: false,
 
     success: function (data) {
-
       if (data.status === false) {
         Swal.fire({
           icon: "error",
@@ -133,4 +132,102 @@ function simpanData() {
       console.log(jqXHR.responseText);
     },
   });
+}
+
+function loadKehadiran() {
+  let bulan = $("#bulan_rekap").val();
+  let tahun = $("#tahun_rekap").val();
+  let user_id = $("#karyawan_rekap_absensi").val();
+  let machine_id = $("#karyawan_rekap_absensi option:selected").data("machine");
+
+  $.ajax({
+    url: BASE_URL + "/get-kehadiran",
+    type: "GET",
+    data: {
+      bulan: bulan,
+      tahun: tahun,
+      user_id: user_id,
+      machine_id: machine_id,
+    },
+    dataType: "json",
+
+    beforeSend: function () {
+      $("#tbodyKehadiran").html(`
+                <tr>
+                    <td colspan="5" class="text-center">
+                        Loading...
+                    </td>
+                </tr>
+            `);
+    },
+
+    success: function (res) {
+      console.log(res);
+      window.dataRekap = res.data;
+      let html = "";
+
+      $.each(res.data, function (index, d) {
+        let jamMasuk = "-";
+        let jamPulang = "-";
+
+        if (d.jam_masuk) {
+          jamMasuk = d.jam_masuk.substring(11, 19);
+        }
+
+        if (d.jam_pulang) {
+          jamPulang = d.jam_pulang.substring(11, 19);
+        }
+
+        html += `
+                    <tr>
+
+                        <td>${d.nama}</td>
+
+                        <td>${d.tanggal}</td>
+
+                        <td>${d.nama_shift}</td>
+
+                        <td>${jamMasuk}</td>
+
+                        <td>${jamPulang}</td>
+
+                    </tr>
+                `;
+      });
+
+      if (html == "") {
+        html = `
+                    <tr>
+                        <td colspan="5"
+                            class="text-center">
+
+                            Tidak ada data
+
+                        </td>
+                    </tr>
+                `;
+      }
+
+      $("#tbodyKehadiran").html(html);
+    },
+
+    error: function (xhr) {
+      console.log(xhr.responseText);
+
+      $("#tbodyKehadiran").html(`
+                <tr>
+                    <td colspan="5"
+                        class="text-danger text-center">
+
+                        Gagal load data
+
+                    </td>
+                </tr>
+            `);
+    },
+  });
+}
+
+function exportExcel() {
+  console.log(window.dataRekap);
 }

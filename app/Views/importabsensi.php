@@ -3,7 +3,7 @@
         <div class="col">
             <hr>
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header">
                     <h5 class="mb-0">Import Data Absensi (USB)</h5>
                 </div>
 

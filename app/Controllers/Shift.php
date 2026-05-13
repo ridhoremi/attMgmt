@@ -53,6 +53,10 @@ class Shift extends BaseController
             $row[] = $temp['nama_mesin'];
             $row[] = $temp['jam_masuk'];
             $row[] = $temp['jam_keluar'];
+            $row[] = $temp['mulaiCheckin'];
+            $row[] = $temp['akhirCheckin'];
+            $row[] = $temp['mulaiCheckout'];
+            $row[] = $temp['akhirCheckout'];
             $row[] = $aksi;
 
             $data[] = $row;
@@ -80,6 +84,10 @@ class Shift extends BaseController
             'nama_shift' => $this->request->getPost('nama_shift'),
             'jam_masuk' => $this->request->getPost('jam_masuk'),
             'jam_keluar' => $this->request->getPost('jam_keluar'),
+            'mulaiCheckin' => $this->request->getPost('mulai_checkin'),
+            'akhirCheckin' => $this->request->getPost('akhir_checkin'),
+            'mulaiCheckout' => $this->request->getPost('mulai_checkout'),
+            'akhirCheckout' => $this->request->getPost('akhir_checkout'),
             'machine_id' => $this->request->getPost('machine_id_shift'),
         ];
         $result = $this->model->simpanData($data);

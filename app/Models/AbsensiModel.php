@@ -12,7 +12,7 @@ class AbsensiModel extends Model
 
 
 
-    public function getData($start=null, $length=null)
+    public function getData($start = null, $length = null)
     {
         return $this->db->table('checkinout c')
             ->select('c.id, c.checktime, c.machine_id, k.nama')
@@ -30,7 +30,7 @@ class AbsensiModel extends Model
             ->countAllResults();
     }
 
-    public function getDataFilter($search, $startDate, $endDate, $start, $length)
+    public function getDataFilter($search = null, $startDate = null, $endDate = null, $start = null, $length = null)
     {
         $builder = $this->db->table('checkinout c')
             ->select('c.id, c.checktime, c.machine_id, k.nama')
@@ -56,7 +56,7 @@ class AbsensiModel extends Model
             ->getResultArray();
     }
 
-    public function getTotalFilter($search, $startDate, $endDate)
+    public function getTotalFilter($search = null, $startDate = null, $endDate = null)
     {
         $builder = $this->db->table('checkinout c')
             ->join('karyawan k', 'k.user_id = c.user_id AND k.machine_id = c.machine_id', 'inner');

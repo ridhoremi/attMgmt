@@ -15,9 +15,15 @@ function initDataShift() {
     serverSide: true,
     pageLength: 10,
     deferRender: true,
+
     ajax: {
       url: BASE_URL + "/listshift",
       type: "GET",
+
+      data: function (d) {
+        d.start_date = $("#start_date").val();
+        d.end_date = $("#end_date").val();
+      },
     },
   });
 }
@@ -53,7 +59,6 @@ function simpanShift() {
       if (data.status) {
         $("#formShift")[0].reset();
         $("#modalShift").modal("hide");
-
         dtShift.ajax.reload(null, false);
       } else {
         for (var i = 0; i < data.inputerror.length; i++) {

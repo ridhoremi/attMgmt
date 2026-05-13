@@ -35,20 +35,21 @@
 
             <!-- Table -->
 
+            <div class="table-responsive p-3 mb-3">
+                <table id="dtTabel" class="table table-bordered mb-0">
+                    <thead>
+                        <tr>
+                            <th width="80">No</th>
+                            <th>Nama Karyawan</th>
+                            <th>Tanggal Absen</th>
+                            <th class="text-center" width="100">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-            <table id="dtTabel" class="table table-bordered mb-0">
-                <thead>
-                    <tr>
-                        <th width="80">No</th>
-                        <th>Nama Karyawan</th>
-                        <th>Tanggal Absen</th>
-                        <th class="text-center" width="100">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
 
 
 

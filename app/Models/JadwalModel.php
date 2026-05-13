@@ -121,4 +121,47 @@ class JadwalModel extends Model
             'message' => 'Jadwal berhasil disimpan'
         ];
     }
+
+    public function getKehadiran($bulan = null, $tahun = null, $userid = null, $mesin = null)
+    {
+        return $this->db->table('jadwal_karyawan jk')
+
+            ->select("jk.user_id, k.nama,jk.machine_id, jk.tanggal, s.nama_shift,
+                 MIN(CASE WHEN((s.mulaiCheckin <= s.akhirCheckin AND TIME(co.checktime)BETWEEN s.mulaiCheckin AND s.akhirCheckin) OR
+                (s.mulaiCheckin > s.akhirCheckin AND (TIME(co.checktime) >= s.mulaiCheckin OR TIME(co.checktime) <= s.akhirCheckin))) THEN co.checktime END) AS jam_masuk,
+                MAX(CASE WHEN((s.mulaiCheckout <= s.akhirCheckout AND TIME(co.checktime) BETWEEN s.mulaiCheckout AND s.akhirCheckout ) OR
+                (s.mulaiCheckout > s.akhirCheckout AND (TIME(co.checktime) >= s.mulaiCheckout OR TIME(co.checktime) <= s.akhirCheckout)))THEN co.checktime END) AS jam_pulang", false)
+            ->join('karyawan k', 'k.user_id=jk.user_id')
+            ->join('shift s', 's.id = jk.shift_id')
+            ->join('checkinout co', "co.user_id = jk.user_id AND co.checktime >= CONCAT(jk.tanggal, ' ', s.mulaiCheckin) AND co.checktime <= CASE WHEN s.mulaiCheckout <= s.akhirCheckout
+                    THEN CONCAT(jk.tanggal, ' ', s.akhirCheckout) ELSE DATE_ADD(CONCAT(jk.tanggal, ' ', s.akhirCheckout), INTERVAL 1 DAY) END", 'left', false)
+            ->where('k.user_id', $userid)
+            ->where('k.machine_id', $mesin)
+            ->where('MONTH(jk.tanggal)', $bulan)
+            ->where('YEAR(jk.tanggal)', $tahun)
+            ->groupBy(' jk.user_id, jk.machine_id,jk.tanggal, s.nama_shift')
+            ->orderBy('jk.tanggal', 'ASC')
+            ->get()
+
+            ->getResultArray();
+    }
+
+    public function getKehadiran_backup($bulan = null, $tahun = null)
+    {
+        return $this->db->table('jadwal_karyawan jk')
+
+            ->select("jk.user_id, k.nama, jk.machine_id, jk.tanggal,s.nama_shift, MIN(CASE WHEN TIME(co.checktime) BETWEEN s.mulaiCheckin AND s.akhirCheckin THEN co.checktime END) AS jam_masuk,
+            MAX(CASE WHEN TIME(co.checktime)BETWEEN s.mulaiCheckout AND s.akhirCheckout THEN co.checktime END) AS jam_pulang", false)
+            ->join('karyawan k', 'k.user_id = jk.user_id', 'left')
+            ->join('shift s', 's.id = jk.shift_id', 'left')
+            ->join('checkinout co', 'co.user_id = jk.user_id AND DATE(co.checktime) = jk.tanggal', 'left')
+
+            ->where('MONTH(jk.tanggal)', $bulan)
+            ->where('YEAR(jk.tanggal)', $tahun)
+
+            ->groupBy(' jk.user_id, jk.tanggal,k.nama, jk.machine_id, s.nama_shift')
+            ->orderBy('jk.tanggal', 'ASC')
+            ->get()
+            ->getResultArray();
+    }
 }
