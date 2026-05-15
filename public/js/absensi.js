@@ -230,4 +230,88 @@ function loadKehadiran() {
 
 function exportExcel() {
   console.log(window.dataRekap);
+
+    if (
+        !window.dataRekap ||
+        window.dataRekap.length == 0
+    ) {
+
+        alert("Data kosong");
+
+        return;
+    }
+
+    // FORMAT DATA
+    const dataExport =
+        window.dataRekap.map((d, index) => ([
+            index + 1,
+
+            d.nama,
+
+            d.tanggal,
+
+            d.nama_shift,
+
+            d.jam_masuk
+                ? d.jam_masuk.substring(11, 19)
+                : "-",
+
+            d.jam_pulang
+                ? d.jam_pulang.substring(11, 19)
+                : "-"
+        ]));
+
+    // HEADER + DATA
+    const worksheet =
+        XLSX.utils.aoa_to_sheet([
+
+            [
+                "No",
+                "Nama",
+                "Tanggal",
+                "Shift",
+                "Jam Masuk",
+                "Jam Pulang"
+            ],
+
+            ...dataExport
+
+        ]);
+
+    // LEBAR KOLOM
+    worksheet["!cols"] = [
+
+        { wch: 8 },   // No
+        { wch: 35 },  // Nama
+        { wch: 18 },  // Tanggal
+        { wch: 25 },  // Shift
+        { wch: 18 },  // Jam Masuk
+        { wch: 18 }   // Jam Pulang
+
+    ];
+
+    // BUAT WORKBOOK
+    const workbook =
+        XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+        workbook,
+        worksheet,
+        "Kehadiran"
+    );
+
+    let bulan= $("#bulan_rekap option:selected")
+    .text()
+    .trim()
+    .replace(/\s+/g, "-");
+    let tahun = $("#tahun_rekap").val();
+    let nama = $("#karyawan_rekap_absensi option:selected")
+    .text()
+    .trim()
+    .replace(/\s+/g, "-");
+    // DOWNLOAD
+    XLSX.writeFile(
+        workbook,
+        `Rekap-kehadiran-${nama}-${bulan}-${tahun}.xlsx`
+    );
 }

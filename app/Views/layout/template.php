@@ -39,9 +39,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
     <script>
         const BASE_URL = "<?= base_url(); ?>";
     </script>
+
     <script src="<?= base_url('js/template.js'); ?>"></script>
     <script src="<?= base_url('js/karyawan.js'); ?>"></script>
     <script src="<?= base_url('js/absensi.js'); ?>"></script>
