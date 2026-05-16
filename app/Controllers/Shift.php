@@ -69,7 +69,6 @@ class Shift extends BaseController
             "recordsFiltered" => $totalFiltered,
             "data" => $data
         ];
-
         echo json_encode($output);
         exit();
     }
@@ -134,6 +133,10 @@ class Shift extends BaseController
             'nama_shift' => $this->request->getPost('nama_shift'),
             'jam_masuk' => $this->request->getPost('jam_masuk'),
             'jam_keluar' => $this->request->getPost('jam_keluar'),
+            'mulaiCheckin' => $this->request->getPost('mulai_checkin'),
+            'akhirCheckin' => $this->request->getPost('akhir_checkin'),
+            'mulaiCheckout' => $this->request->getPost('mulai_checkout'),
+            'akhirCheckout' => $this->request->getPost('akhir_checkout'),
             'machine_id' => $this->request->getPost('machine_id_shift'),
         ];
 
@@ -146,7 +149,8 @@ class Shift extends BaseController
             ]);
         }
         return $this->response->setJSON([
-            'status' => true
+            'status' => true,
+            'message' => 'Data Berhasil diUbah'
         ]);
     }
 
@@ -164,6 +168,14 @@ class Shift extends BaseController
         return $this->response->setJSON([
             'status' => true,
             'message' => 'Hapus Data Berhasil'
+        ]);
+    }
+
+    public function tampilShift()
+    {
+        $shift = $this->model->getAllShift();
+        return $this->response->setJSON([
+            'shift' => $shift
         ]);
     }
 }

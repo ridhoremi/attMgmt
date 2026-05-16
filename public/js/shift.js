@@ -3,6 +3,8 @@ $(document).ready(function () {
   if ($("#dtShift").length) {
     initDataShift();
   }
+
+  loadshift();
 });
 
 function initDataShift() {
@@ -40,7 +42,6 @@ function form_shift() {
 
 function simpanShift() {
   let url;
-
   $(".form-control").removeClass("is-invalid");
   $(".help-block").text("");
   if (method == "insert") {
@@ -89,7 +90,10 @@ function editDataShift(id) {
       $('[name="nama_shift"]').val(data.data.nama_shift);
       $('[name="jam_masuk"]').val(data.data.jam_masuk);
       $('[name="jam_keluar"]').val(data.data.jam_keluar);
-
+      $('[name="mulai_checkin"]').val(data.data.mulaiCheckin);
+      $('[name="akhir_checkin"]').val(data.data.akhirCheckin);
+      $('[name="mulai_checkout"]').val(data.data.mulaiCheckout);
+      $('[name="akhir_checkout"]').val(data.data.akhirCheckout);
       // $("#id").prop("readonly", true);
       $("#modalShift").modal("show");
       $("#modal_titel-shift").text("Edit Data");
@@ -130,12 +134,37 @@ function hapusDataShift(id) {
           } else {
             Swal.fire({
               title: "Gagal!",
-              text: res.message, // 🔥 juga dari backend
+              text: res.message,
               icon: "error",
             });
           }
         },
       });
     }
+  });
+}
+
+function loadshift() {
+  $.ajax({
+    url: BASE_URL + "/get-shift",
+    type: "GET",
+    dataType: "json",
+    success: function (res) {
+      let html = `
+                <option value="">
+                    -- Pilih Shift --
+                </option>
+            `;
+      $.each(res.shift, function (index, k) {
+        html += `
+                    <option 
+                        value="${k.id}">
+                         ${k.nama_shift}  -  ${k.nama_mesin}
+
+                    </option>
+                `;
+      });
+      $("#shift_id").html(html);
+    },
   });
 }

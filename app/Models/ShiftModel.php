@@ -28,7 +28,7 @@ class ShiftModel extends Model
         // $result = $this->like('nama_shift', $search)->findAll($start, $length);
         $result = $this->db->table('shift s')
             ->select('s.id,s.nama_shift, m.nama_mesin, s.jam_masuk, s.jam_keluar, s.mulaiCheckin, s.akhirCheckin, s.mulaiCheckout, s.akhirCheckout')
-            ->join('mesin m', 'm.machine_id = c.machine_id', 'inner');
+            ->join('mesin m', 'm.machine_id = s.machine_id', 'inner');
 
         if ($search) {
             $result->groupStart()
@@ -53,8 +53,13 @@ class ShiftModel extends Model
 
     public function getAllShift()
     {
-        return $this->orderBy('id', 'ASC')->findAll();
+        return $this->db->table('shift s')
+            ->join('mesin m', 'm.machine_id = s.machine_id')
+            ->orderBy('s.id', 'ASC')
+            ->get()
+            ->getResultArray();
     }
+
 
     public function getTotalSearch($search = null)
     {

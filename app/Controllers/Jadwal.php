@@ -225,7 +225,7 @@ class Jadwal extends BaseController
 
     public function simpanJadwal()
     {
-        $jadwalModel = new \App\Models\JadwalModel();
+
 
         $user_id    = $this->request->getPost('user_id');
         $machine_id = $this->request->getPost('machine_id');
@@ -233,6 +233,7 @@ class Jadwal extends BaseController
         $mulai      = $this->request->getPost('tanggal_mulai');
         $selesai    = $this->request->getPost('tanggal_selesai');
         $ket        = $this->request->getPost('keterangan');
+
 
         if (!$user_id || !$machine_id || !$shift_id || !$mulai || !$selesai) {
             return $this->response->setJSON([
@@ -248,7 +249,24 @@ class Jadwal extends BaseController
             ]);
         }
 
-        $result = $jadwalModel->generateJadwal(
+        $karyawan = $this->modelKaryawan
+            ->where('user_id', $user_id)
+            ->where('machine_id', $machine_id)
+            ->first();
+
+        $shift = $this->modelShift
+            ->where('id', $shift_id)
+            ->first();
+
+        if ($karyawan['machine_id'] != $shift['machine_id']) {
+
+            return $this->response->setJSON([
+                'status' => false,
+                'message' => 'Mesin karyawan dan shift tidak sama'
+            ]);
+        }
+
+        $result = $this->modelJadwal->generateJadwal(
             $user_id,
             $machine_id,
             $shift_id,

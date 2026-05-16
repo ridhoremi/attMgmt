@@ -73,18 +73,14 @@ class JadwalModel extends Model
 
         // ubah jadi array lookup cepat
         $existingDates = array_column($existing, 'tanggal');
-
         $dataInsert = [];
         $duplikat   = [];
-
         // 3. Filter di PHP (tanpa query lagi)
         foreach ($allDates as $tanggal) {
-
             if (in_array($tanggal, $existingDates)) {
                 $duplikat[] = $tanggal;
                 continue;
             }
-
             $dataInsert[] = [
                 'user_id'    => $user_id,
                 'machine_id' => $machine_id,
@@ -93,14 +89,12 @@ class JadwalModel extends Model
                 'keterangan' => $keterangan
             ];
         }
-
         // 4. INSERT SEKALI (BATCH)
         if (!empty($dataInsert)) {
             $this->insertBatch($dataInsert);
         }
 
         $berhasil = count($dataInsert);
-
         // 5. RESPONSE
         if ($berhasil == 0) {
             return [
@@ -108,14 +102,12 @@ class JadwalModel extends Model
                 'message' => 'Semua jadwal sudah ada'
             ];
         }
-
         if (count($duplikat) > 0) {
             return [
                 'status'  => true,
                 'message' => $berhasil . ' jadwal berhasil disimpan, sebagian sudah ada'
             ];
         }
-
         return [
             'status'  => true,
             'message' => 'Jadwal berhasil disimpan'
@@ -125,43 +117,39 @@ class JadwalModel extends Model
     public function getKehadiran($bulan = null, $tahun = null, $userid = null, $mesin = null)
     {
         return $this->db->table('jadwal_karyawan jk')
-
-            ->select("jk.user_id, k.nama,jk.machine_id, jk.tanggal, s.nama_shift,
-                 MIN(CASE WHEN((s.mulaiCheckin <= s.akhirCheckin AND TIME(co.checktime)BETWEEN s.mulaiCheckin AND s.akhirCheckin) OR
-                (s.mulaiCheckin > s.akhirCheckin AND (TIME(co.checktime) >= s.mulaiCheckin OR TIME(co.checktime) <= s.akhirCheckin))) THEN co.checktime END) AS jam_masuk,
-                MAX(CASE WHEN((s.mulaiCheckout <= s.akhirCheckout AND TIME(co.checktime) BETWEEN s.mulaiCheckout AND s.akhirCheckout ) OR
-                (s.mulaiCheckout > s.akhirCheckout AND (TIME(co.checktime) >= s.mulaiCheckout OR TIME(co.checktime) <= s.akhirCheckout)))THEN co.checktime END) AS jam_pulang", false)
-            ->join('karyawan k', 'k.user_id=jk.user_id')
+            ->select(" jk.user_id,k.nama, jk.machine_id, jk.tanggal,s.nama_shift,(SELECT MIN(co1.checktime) FROM checkinout co1 WHERE co1.user_id = jk.user_id
+            AND DATE(co1.checktime) = jk.tanggal AND TIME(co1.checktime) >= s.mulaiCheckin AND TIME(co1.checktime) <= s.akhirCheckin) AS jam_masuk,(CASE WHEN s.jam_keluar < s.jam_masuk THEN
+            (SELECT MAX(co2.checktime) FROM checkinout co2 WHERE co2.user_id = jk.user_id AND DATE(co2.checktime) = DATE_ADD(jk.tanggal, INTERVAL 1 DAY)
+            AND TIME(co2.checktime) >= s.mulaiCheckout AND TIME(co2.checktime) <= s.akhirCheckout) ELSE(SELECT MAX(co3.checktime)FROM checkinout co3 WHERE co3.user_id = jk.user_id
+            AND DATE(co3.checktime) = jk.tanggal AND TIME(co3.checktime) >= s.mulaiCheckout AND TIME(co3.checktime) <= s.akhirCheckout)END) AS jam_pulang", false)
+            ->join('karyawan k', 'k.user_id = jk.user_id')
             ->join('shift s', 's.id = jk.shift_id')
-            ->join('checkinout co', "co.user_id = jk.user_id AND co.checktime >= CONCAT(jk.tanggal, ' ', s.mulaiCheckin) AND co.checktime <= CASE WHEN s.mulaiCheckout <= s.akhirCheckout
-                    THEN CONCAT(jk.tanggal, ' ', s.akhirCheckout) ELSE DATE_ADD(CONCAT(jk.tanggal, ' ', s.akhirCheckout), INTERVAL 1 DAY) END", 'left', false)
-            ->where('k.user_id', $userid)
-            ->where('k.machine_id', $mesin)
+            ->where('jk.user_id', $userid)
+            ->where('jk.machine_id', $mesin)
             ->where('MONTH(jk.tanggal)', $bulan)
             ->where('YEAR(jk.tanggal)', $tahun)
-            ->groupBy(' jk.user_id, jk.machine_id,jk.tanggal, s.nama_shift')
-            ->orderBy('jk.tanggal', 'ASC')
-            ->get()
-
-            ->getResultArray();
-    }
-
-    public function getKehadiran_backup($bulan = null, $tahun = null)
-    {
-        return $this->db->table('jadwal_karyawan jk')
-
-            ->select("jk.user_id, k.nama, jk.machine_id, jk.tanggal,s.nama_shift, MIN(CASE WHEN TIME(co.checktime) BETWEEN s.mulaiCheckin AND s.akhirCheckin THEN co.checktime END) AS jam_masuk,
-            MAX(CASE WHEN TIME(co.checktime)BETWEEN s.mulaiCheckout AND s.akhirCheckout THEN co.checktime END) AS jam_pulang", false)
-            ->join('karyawan k', 'k.user_id = jk.user_id', 'left')
-            ->join('shift s', 's.id = jk.shift_id', 'left')
-            ->join('checkinout co', 'co.user_id = jk.user_id AND DATE(co.checktime) = jk.tanggal', 'left')
-
-            ->where('MONTH(jk.tanggal)', $bulan)
-            ->where('YEAR(jk.tanggal)', $tahun)
-
-            ->groupBy(' jk.user_id, jk.tanggal,k.nama, jk.machine_id, s.nama_shift')
             ->orderBy('jk.tanggal', 'ASC')
             ->get()
             ->getResultArray();
     }
+
+
+    // public function getKehadiran_backup($bulan = null, $tahun = null)
+    // {
+    //     return $this->db->table('jadwal_karyawan jk')
+
+    //         ->select("jk.user_id, k.nama, jk.machine_id, jk.tanggal,s.nama_shift, MIN(CASE WHEN TIME(co.checktime) BETWEEN s.mulaiCheckin AND s.akhirCheckin THEN co.checktime END) AS jam_masuk,
+    //         MAX(CASE WHEN TIME(co.checktime)BETWEEN s.mulaiCheckout AND s.akhirCheckout THEN co.checktime END) AS jam_pulang", false)
+    //         ->join('karyawan k', 'k.user_id = jk.user_id', 'left')
+    //         ->join('shift s', 's.id = jk.shift_id', 'left')
+    //         ->join('checkinout co', 'co.user_id = jk.user_id AND DATE(co.checktime) = jk.tanggal', 'left')
+
+    //         ->where('MONTH(jk.tanggal)', $bulan)
+    //         ->where('YEAR(jk.tanggal)', $tahun)
+
+    //         ->groupBy(' jk.user_id, jk.tanggal,k.nama, jk.machine_id, s.nama_shift')
+    //         ->orderBy('jk.tanggal', 'ASC')
+    //         ->get()
+    //         ->getResultArray();
+    // }
 }

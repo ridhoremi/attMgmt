@@ -80,41 +80,34 @@
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
-
             </div>
 
-            <!-- Body -->
+
+
             <form id="formTambahJadwal">
                 <div class="modal-body">
                     <div class="row g-3">
-                        <!-- Karyawan -->
-                        <div class="col-md-6">
-                            <label class="form-label fw-semibold">
+                        <div class="col-md-6 d-flex flex-column">
+                            <label class="form-label fw-semibold mb-1">
                                 Karyawan
                             </label>
+
                             <select class="form-select" id="karyawan" required>
-                                <option value="">
-                                    -- Pilih Karyawan --
-                                </option>
+                                <option value="">-- Pilih Karyawan --</option>
                             </select>
                         </div>
 
-                        <!-- Shift -->
-                        <div class="col-md-6">
-
-                            <label class="form-label fw-semibold">
+                        <div class="col-md-6 d-flex flex-column mb-3">
+                            <label class="form-label fw-semibold mb-1">
                                 Shift
                             </label>
 
                             <select class="form-select" id="shift_id" required>
-                                <option value="">
-                                    -- Pilih Shift --
-                                </option>
-
+                                <option value="">-- Pilih Shift --</option>
                             </select>
                         </div>
-                        <!-- Tanggal -->
-                        <div class="col-md-6">
+
+                        <div class="col-md-6 mb-3">
                             <label class="form-label fw-semibold">
                                 Tanggal Mulai
                             </label>
@@ -145,9 +138,8 @@
 
                 </div>
 
-                <!-- Footer -->
-                <div class="modal-footer">
 
+                <div class="modal-footer">
                     <button type="button" class="btn btn-light border" data-dismiss="modal">
                         Batal
                     </button>

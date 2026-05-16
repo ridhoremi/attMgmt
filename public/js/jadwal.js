@@ -1,9 +1,8 @@
 $(document).ready(function () {
+  loadKaryawan();
   loadBulan();
   loadTahun();
   loadJadwal();
-  loadKaryawan();
-  loadshift();
 });
 
 function loadJadwal() {
@@ -18,9 +17,7 @@ function loadJadwal() {
       bulan: bulan,
       tahun: tahun,
     },
-
     dataType: "json",
-
     beforeSend: function () {
       $("#theadJadwal").html("");
 
@@ -35,12 +32,7 @@ function loadJadwal() {
     },
 
     success: function (res) {
-      // =========================
-      // HEADER
-      // =========================
-
       let thead = "<tr>";
-
       thead += `
                 <th class="text-start sticky-col bg-dark text-white">
                     Nama Karyawan
@@ -184,6 +176,8 @@ function simpanJadwal() {
   let btn = $("#btnTambahJadwal");
   let user_id = $("#karyawan").val();
   let machine_id = $("#karyawan option:selected").data("machine");
+  let machine_id2 = $("#shift_id option:selected").data("machine");
+
   console.log({
     user_id: user_id,
     machine_id: machine_id,
@@ -275,32 +269,6 @@ function loadKaryawan() {
       $("#karyawan").html(html);
       $("#hapus_karyawan").html(html);
       $("#karyawan_rekap_absensi").html(html);
-    },
-  });
-}
-
-function loadshift() {
-  $.ajax({
-    url: BASE_URL + "/get-shift",
-    type: "GET",
-    dataType: "json",
-    success: function (res) {
-      let html = `
-                <option value="">
-                    -- Pilih Shift --
-                </option>
-            `;
-      $.each(res.shift, function (index, k) {
-        html += `
-                    <option 
-                        value="${k.id}">
-                        
-                        ${k.nama_shift} 
-
-                    </option>
-                `;
-      });
-      $("#shift_id").html(html);
     },
   });
 }

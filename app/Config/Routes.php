@@ -34,7 +34,7 @@ $routes->get('/getJadwal', 'Jadwal::getJadwal');
 $routes->post('/jadwal-simpan', 'Jadwal::simpanJadwal');
 $routes->get('/get-karyawan', 'Jadwal::cmbKaryawan');
 $routes->post('/jadwal-hapus', 'Jadwal::hapus');
-$routes->get('/get-shift', 'Jadwal::cmbShift');
+$routes->get('/get-shift', 'Shift::tampilShift');
 
 
 $routes->get('/rekap-absensi', 'RekapAbsensi::index');
