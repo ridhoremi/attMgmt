@@ -63,13 +63,9 @@ class ShiftModel extends Model
 
     public function getTotalSearch($search = null)
     {
-        // $result = $this->like('nama_shift', $search)->countAllResults();
-        // return $result;
 
         $result = $this->db->table('shift s')
-            ->join('mesin m', 'm.machine_id = c.machine_id', 'inner');
-
-
+            ->join('mesin m', 'm.machine_id = s.machine_id', 'inner');
 
         if ($search) {
             $result->groupStart()

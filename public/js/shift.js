@@ -1,7 +1,7 @@
 var dtShift;
 $(document).ready(function () {
   if ($("#dtShift").length) {
-    initDataShift();
+     initDataShift();
   }
 
   loadshift();
@@ -13,7 +13,7 @@ function initDataShift() {
   }
 
   dtShift = $("#dtShift").DataTable({
-    processing: true,
+    processing: false,
     serverSide: true,
     pageLength: 10,
     deferRender: true,
@@ -21,11 +21,6 @@ function initDataShift() {
     ajax: {
       url: BASE_URL + "/listshift",
       type: "GET",
-
-      data: function (d) {
-        d.start_date = $("#start_date").val();
-        d.end_date = $("#end_date").val();
-      },
     },
   });
 }
